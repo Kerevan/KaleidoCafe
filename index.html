@@ -2193,9 +2193,37 @@ function Character_Echo()
                                  
   var ActionsArray = [];
    
-  // ==== Basic Attack  ==================
+  // ==== Basic Attack (Telekinetic Push) ========================
+  var EchoAction_TelekineticPush = new TBS_action();
+  EchoAction_TelekineticPush.name="Telekinetic Push";
+  EchoAction_TelekineticPush.desc="Базовый прием Эхо.<br>Урон: 100% силы атаки (<img src=\"Images/dmg_physical.png\" width=\"24\"> <img src=\"Images/dmg_mental.png\" width=\"24\">) (разброс: ±0%)<br>Может нанести критический урон: Да.";
+  EchoAction_TelekineticPush.pic="action_telekineticpush.png"; 
+  EchoAction_TelekineticPush.animation="telekinetic_push.webp";
+  EchoAction_TelekineticPush.animtime=1680;
+  EchoAction_TelekineticPush.sound="telekineticpush.ogg";
+  EchoAction_TelekineticPush.hpcost=0;
+  EchoAction_TelekineticPush.mpcost=0;
+  EchoAction_TelekineticPush.tpcost=0;
+  EchoAction_TelekineticPush.cooldown=0;
+  EchoAction_TelekineticPush.cooldown_initial=0;
+  EchoAction_TelekineticPush.cooldown_cur=0;
+  EchoAction_TelekineticPush.scope="enemy_single";
+  EchoAction_TelekineticPush.formula = function(host,target)  // action specific events
+  	{
+    	//100% atk phy+men damage (0% variance)
+        var Crit="";
+    	var Dmg=getDamageWithVariance(host.atk,20); 
+    	if (Math.random()*100<=host.critchance) { Dmg=Dmg*(host.critdmg/100); Crit="  <font color=\"#F7DC6F\">﴾Критический удар﴿</font>"}
+    
+      	var TotalDamage = new TBS_DmgCon( Dmg/2, 0, 0, Dmg/2,0,0,0);
+    
+    	var inflicted_dmg = inflictDamage(host,target,TotalDamage);
+    
+   	  	battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ EchoAction_TelekineticPush.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font> и наносит ' + inflicted_dmg + ' <img src=\"Images/dmg_physical.png\" width=\"24\"><img src=\"Images/dmg_mental.png\" width=\"24\"> урона'+Crit);
+    };
   
-  // ================================================== 
+  Echo.actions.push(EchoAction_TelekineticPush);
+  // ===========================================================
       
   return Echo;
   
