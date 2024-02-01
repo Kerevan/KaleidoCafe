@@ -2176,7 +2176,7 @@ function Character_Echo()
   Echo.pic="echo_normal";
   Echo.health_max=100; Echo.health_cur=100;
   Echo.mana_max=100; Echo.mana_cur=100;   
-  Echo.atk=10;
+  Echo.atk=20;
   Echo.tp=0;
   Echo.shield=0;
   Echo.break = new TBS_DmgCon(0,0,0,0,0,0,0);
@@ -2212,7 +2212,7 @@ function Character_Echo()
   	{
     	//100% atk phy+men damage (0% variance)
         var Crit="";
-    	var Dmg=getDamageWithVariance(host.atk,20); 
+    	var Dmg = host.atk; 
     	if (Math.random()*100<=host.critchance) { Dmg=Dmg*(host.critdmg/100); Crit="  <font color=\"#F7DC6F\">﴾Критический удар﴿</font>"}
     
       	var TotalDamage = new TBS_DmgCon( Dmg/2, 0, 0, Dmg/2,0,0,0);
