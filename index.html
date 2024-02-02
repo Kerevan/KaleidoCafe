@@ -994,6 +994,11 @@ class MAP_Cell
   }
 }
 
+// some additional declarations
+window.helper = {};
+window.kaleidocafe = {};
+window.kaleidocafe.Characters = {};
+
 // ---- TBS init
 macros.initTBS = {
   handler: function(place, macroName, params, parser) {
@@ -1006,18 +1011,18 @@ macros.initTBS = {
     state.active.variables.TBS_queue = [];
     
     //Characters
-    state.active.variables.TBS_chars.push(Character_Tray()); //ID = 0
-    state.active.variables.TBS_chars.push(Character_Holy()); //ID = 1
-    state.active.variables.TBS_chars.push(Character_Damian()); //ID = 2
-    state.active.variables.TBS_chars.push(Character_Iliciele()); //ID = 3
-    state.active.variables.TBS_chars.push(Character_Arken()); //ID = 4
-    state.active.variables.TBS_chars.push(Character_Echo()); //ID = 5
-    state.active.variables.TBS_chars.push(Character_Mate()); //ID = 6
+    state.active.variables.TBS_chars.push(window.kaleidocafe.Characters.Character_Tray()); //ID = 0
+    state.active.variables.TBS_chars.push(window.kaleidocafe.Characters.Character_Holy()); //ID = 1
+    state.active.variables.TBS_chars.push(window.kaleidocafe.Characters.Character_Damian()); //ID = 2
+    state.active.variables.TBS_chars.push(window.kaleidocafe.Characters.Character_Iliciele()); //ID = 3
+    state.active.variables.TBS_chars.push(window.kaleidocafe.Characters.Character_Arken()); //ID = 4
+    state.active.variables.TBS_chars.push(window.kaleidocafe.Characters.Character_Echo()); //ID = 5
+    state.active.variables.TBS_chars.push(window.kaleidocafe.Characters.Character_Mate()); //ID = 6
     
-    state.active.variables.TBS_chars.push(Character_Daisa7()); //ID = 7
+    state.active.variables.TBS_chars.push(window.kaleidocafe.Characters.Character_Daisa7()); //ID = 7
     
     //Maps
-    InitMap_Ruins();
+    window.InitMap_Ruins();
   }
 };
 
@@ -1042,7 +1047,7 @@ macros.wikifyTeam = {
       WF+='</tr></table>'
       
       new Wikifier(place, WF);
-      wikifyAllyPanel();
+      window.wikifyAllyPanel();
       
     }
 };
@@ -1056,7 +1061,7 @@ window.changeTeam = function(char_id)
   
   if (is_joining == true)
   {
-    if (TeamSize<4) {state.active.variables.TBS_chars[char_id].joined=true; document.getElementById('teamchar'+char_id).className = "teamcharselected";} else { actionSound("error.ogg"); }
+    if (TeamSize<4) {state.active.variables.TBS_chars[char_id].joined=true; document.getElementById('teamchar'+char_id).className = "teamcharselected";} else {window.kaleidocafe.actionSound("error.ogg"); }
   
   }
   else
@@ -1068,7 +1073,7 @@ window.changeTeam = function(char_id)
 
 
 // ---- Ruins Map
-function InitMap_Ruins() 
+window.InitMap_Ruins = function() 
 {
   state.active.variables.Map_Ruins = [];
   
@@ -1093,9 +1098,9 @@ function InitMap_Ruins()
   
   state.active.variables.Map_Ruins.push(new MAP_Cell("Обитель","ruins_cradle.png","Ruins_Cradle",true,6,1));
   
-}
+};
 // ---- Ally Panel Wikifier
-function wikifyAllyPanel() 
+window.wikifyAllyPanel = function() 
 {
   
     
@@ -1109,11 +1114,11 @@ function wikifyAllyPanel()
 	  	if (item.joined==true && item.is_enemy==false)
  	 	{
           
-          var health_percent=helper_minmaxpercent(Math.floor((item.health_cur/item.health_max)*100));
-          var mana_percent=helper_minmaxpercent(Math.floor((item.mana_cur/item.mana_max)*100));
-          var shield_percent=helper_minmaxpercent(Math.floor((item.shield/item.health_max)*100));          
+          var health_percent=window.helper.minmaxpercent(Math.floor((item.health_cur/item.health_max)*100));
+          var mana_percent=window.helper.minmaxpercent(Math.floor((item.mana_cur/item.mana_max)*100));
+          var shield_percent=window.helper.minmaxpercent(Math.floor((item.shield/item.health_max)*100));          
  	   		          
-          wikified_allies=wikified_allies+'<tr><td rowspan="3"><img id="char_'+index+'" class="ally" style="background-image: url(Images/'+item.pic +'.png)" src="Images/transparent.png" onclick="window.useAction('+index+')" alt=""></td><td>'+item.name+'</td></tr><tr><td><span class="spell_tooltip"><span class="bar_back" style="border-image:   linear-gradient(to right, white '+shield_percent+'%, #444 '+shield_percent+'%, #444 100%) 2;"><span class="hp_bar" style="width:'+health_percent+'%"></span><span class="mp_bar" style="width:'+mana_percent+'%"></span></span><span class="spell_tooltiptext">HP: '+item.health_cur+' / '+item.health_max+'<br>MP: '+item.mana_cur+' / '+item.mana_max+'<br>SH: '+item.shield+'</span></span></td></tr><tr>';
+          wikified_allies=wikified_allies+'<tr><td rowspan="3"><img id="char_'+index+'" class="ally" style="background-image: url(Images/'+item.pic +'.png)" src="Images/transparent.png" onclick="window.kaleidocafe.useAction('+index+')" alt=""></td><td>'+item.name+'</td></tr><tr><td><span class="spell_tooltip"><span class="bar_back" style="border-image:   linear-gradient(to right, white '+shield_percent+'%, #444 '+shield_percent+'%, #444 100%) 2;"><span class="hp_bar" style="width:'+health_percent+'%"></span><span class="mp_bar" style="width:'+mana_percent+'%"></span></span><span class="spell_tooltiptext">HP: '+item.health_cur+' / '+item.health_max+'<br>MP: '+item.mana_cur+' / '+item.mana_max+'<br>SH: '+item.shield+'</span></span></td></tr><tr>';
           
           for (var sb=0;sb<item.statuses.length;sb++)
           {
@@ -1136,7 +1141,7 @@ function wikifyAllyPanel()
 };
 
 // ---- Enemy Panel Wikifier
-function wikifyEnemyPanel() 
+window.wikifyEnemyPanel = function() 
 {
   
   var wikified_enemies = '';
@@ -1153,7 +1158,7 @@ function wikifyEnemyPanel()
           
           
  	   		
-          	wikified_enemies = wikified_enemies + '<td><tr><td><img id="char_'+index+'" class="'+item.pic+'" onclick="window.useAction('+index+')" src="Images//transparent.png" alt=""></td></tr><tr><td>'+item.name+'</td></tr><tr><td><span class="spell_tooltip"><span class="bar_back"><span class="hp_bar" style="width:'+health_percent+'%"></span><span class="mp_bar" style="width:'+mana_percent+'%"></span></span><span class="spell_tooltiptext">HP: '+item.health_cur+' / '+item.health_max+'<br>MP: '+item.mana_cur+' / '+item.mana_max+'<br>SH: '+item.shield+'</span></span></td></tr><tr>';
+          	wikified_enemies = wikified_enemies + '<td><tr><td><img id="char_'+index+'" class="'+item.pic+'" onclick="window.kaleidocafe.useAction('+index+')" src="Images//transparent.png" alt=""></td></tr><tr><td>'+item.name+'</td></tr><tr><td><span class="spell_tooltip"><span class="bar_back"><span class="hp_bar" style="width:'+health_percent+'%"></span><span class="mp_bar" style="width:'+mana_percent+'%"></span></span><span class="spell_tooltiptext">HP: '+item.health_cur+' / '+item.health_max+'<br>MP: '+item.mana_cur+' / '+item.mana_max+'<br>SH: '+item.shield+'</span></span></td></tr><tr>';
           
           	for (var sb=0;sb<item.statuses.length;sb++)
           	{
@@ -1187,12 +1192,12 @@ macros.initBattle = {
       
      
       	// init enemy array by preset name
- 		activateEnemyGroup(params[0]);
+ 		window.kaleidocafe.activateEnemyGroup(params[0]);
       
       //initiative array
-      state.active.variables.TBS_chars.forEach(setInitiative);
+      state.active.variables.TBS_chars.forEach(window.kaleidocafe.setInitiative);
             
-      sortInitiative();
+      window.kaleidocafe.sortInitiative();
       
       //Initial setup of internal parameters for chars
   	  for (let scid=0;scid<state.active.variables.TBS_chars.length;scid++)
@@ -1257,37 +1262,38 @@ macros.wikifyMap_Ruins = {
 };
 
 // ---- MinMax_helper
-function helper_minmaxpercent(number) {
+window.helper.minmaxpercent = function(number)
+{
 	return Math.min(Math.max(number, 0), 100);
 
-}
+};
 
 
 // ---- Get random int
-function getRandomInt(min, max) 
+window.helper.getRandomInt = function(min, max) 
 {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
-}
+};
 //
-function getDamageWithVariance(damage, variance) 
+window.helper.getDamageWithVariance = function(damage, variance) 
 {
   var min = damage * ((100-variance)/100);
   var max = damage * ((100+variance)/100);
   return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
-}
+};
 // ---- Set Initiative queue
-function setInitiative(item,index,arr) 
-      {
-         if (item.joined==true)
- 	 	{
-          state.active.variables.TBS_queue.push(new TBS_initiative(item.name, Math.floor(1000/item.speed), item.speed, item.pic));
-        }
-      }
+window.kaleidocafe.setInitiative = function(item,index,arr) 
+{
+    if (item.joined==true)
+ 	{
+        state.active.variables.TBS_queue.push(new TBS_initiative(item.name, Math.floor(1000/item.speed), item.speed, item.pic));
+    }
+};
 
 // ---- Sort Initiative queue 
-function sortInitiative()
+window.kaleidocafe.sortInitiative = function()
 {
   
   state.active.variables.TBS_queue.sort((a,b) => a.initiative - b.initiative);
@@ -1297,17 +1303,17 @@ function sortInitiative()
   //parse initiative down
   state.active.variables.TBS_queue.forEach(x => x.initiative = x.initiative - first_initiative);
   
-}
+};
 // ---- Action Execution 
-function executeAction(action,host,target)
+window.kaleidocafe.executeAction = function(action,host,target)
 {
   
   action.formula(host,target);
   
-}
+};
 
 // ---- Char Queue List Wikifier
-function wikifyQueuePanel() 
+window.wikifyQueuePanel = function() 
 {
   
   let host = state.active.variables.TBS_chars[state.active.variables.TBS_chars.findIndex(x => x.name == state.active.variables.TBS_queue[0].name)];
@@ -1330,7 +1336,7 @@ function wikifyQueuePanel()
       
      document.getElementById('QueuePanel').innerHTML = '<table class="battlelist"><tr>' + QT + '</tr></table>';
     
-     battleLog('<hr>Ходит: <b>' + state.active.variables.TBS_queue[0].name + '<b>');
+     window.battleLog('<hr>Ходит: <b>' + state.active.variables.TBS_queue[0].name + '<b>');
   
   	//Check action cooldowns
   	for (let sa=0;sa<host.actions.length;sa++)
@@ -1347,13 +1353,13 @@ function wikifyQueuePanel()
   
   
   	  
-  if (host.is_enemy == true) { ai_make_turn(host); }
+  if (host.is_enemy == true) { window.kaleidocafe.ai_make_turn(host); }
   
   	
 };
 
 // ---- Action Effect
-function actionEffect(ElementID, Effect, duration) 
+window.kaleidocafe.actionEffect = function(ElementID, Effect, duration) 
 { 
   
   /*
@@ -1382,7 +1388,7 @@ function actionEffect(ElementID, Effect, duration)
       
 };
 // ---- Sound Effect
-function actionSound(sound) 
+window.kaleidocafe.actionSound = function(sound) 
 { 
   
  	let audio = new Audio("SFX\\"+sound);
@@ -1392,7 +1398,8 @@ function actionSound(sound)
 };
 
 // ---- Action list Wikifier
-function wikifyActionPanel() {
+window.wikifyActionPanel = function() 
+{
       
      
         let text_wikified='';
@@ -1409,7 +1416,7 @@ function wikifyActionPanel() {
           let cd = 'transparent.png';
           if (host.actions[i].cooldown_cur > 0) { cd = 'cd' + host.actions[i].cooldown_cur + '.png'; }
                     
-          text_wikified = text_wikified + '<td><span class="action_tooltip"><img class="action" id="char_' + CurrentCharID + '_action_' + i + '" onclick="window.selectAction('+ i +')" width="50" height="50" style="background-image: url(Images/'+host.actions[i].pic +')" src="Images/' + cd + '"><span class="action_tooltiptext"><b>' + host.actions[i].name + '</b><br>' + host.actions[i].desc + '</span></span></td>';
+          text_wikified = text_wikified + '<td><span class="action_tooltip"><img class="action" id="char_' + CurrentCharID + '_action_' + i + '" onclick="window.kaleidocafe.selectAction('+ i +')" width="50" height="50" style="background-image: url(Images/'+host.actions[i].pic +')" src="Images/' + cd + '"><span class="action_tooltiptext"><b>' + host.actions[i].name + '</b><br>' + host.actions[i].desc + '</span></span></td>';
           
       	}
   
@@ -1431,7 +1438,7 @@ window.changePassage = function(passage)
 };
 
 // ---- Select Action function
-window.selectAction = function(actionid) 
+window.kaleidocafe.selectAction = function(actionid) 
 { 
   
   let hostid = state.active.variables.TBS_chars.findIndex(x => x.name == state.active.variables.TBS_queue[0].name);
@@ -1447,16 +1454,16 @@ window.selectAction = function(actionid)
   	{ 
     	document.getElementById('char_'+ hostid + '_action_' + actionid).className="selected_action";
   
-  		if (state.active.variables.TBS_chars[hostid].actions[actionid].scope=="self") { window.useAction(hostid); }
+  		if (state.active.variables.TBS_chars[hostid].actions[actionid].scope=="self") { window.kaleidocafe.useAction(hostid); }
           
-  	} else { actionSound("error.ogg"); battleLog('Action is on cooldown!'); }
+  	} else {window.kaleidocafe.actionSound("error.ogg"); window.battleLog('Action is on cooldown!'); }
           
-  } else { actionSound("error.ogg"); battleLog('Not enough resources to use action!'); }
+  } else {window.kaleidocafe.actionSound("error.ogg"); window.battleLog('Not enough resources to use action!'); }
   
 };
 
 // ---- Use Action on Target
-window.useAction = function(targetid) 
+window.kaleidocafe.useAction = function(targetid) 
 { 
   
   let host = state.active.variables.TBS_chars[state.active.variables.TBS_chars.findIndex(x => x.name == state.active.variables.TBS_queue[0].name)];
@@ -1485,10 +1492,10 @@ window.useAction = function(targetid)
   				//--TODO check for action scope (one target or all group)
   
   				// action effect and sound
-  				actionEffect('char_'+targetid, action.animation, action.animtime);
-  				actionSound(action.sound);    
+  				window.kaleidocafe.actionEffect('char_'+targetid, action.animation, action.animtime);
+  				window.kaleidocafe.actionSound(action.sound);    
   
-  				executeAction(action,host,target);
+  				window.kaleidocafe.executeAction(action,host,target);
           
           		action.cooldown_cur = action.cooldown;
   
@@ -1507,27 +1514,27 @@ window.useAction = function(targetid)
               
             
   				state.active.variables.TBS_queue[0].initiative = Math.floor(1000/host.speed);
-  				sortInitiative();
+  				window.kaleidocafe.sortInitiative();
   
   				window.battleUpdate(action.animtime);
               
         
           
-      } else { actionSound("error.ogg"); battleLog('Invalid target for action (must be used on ' + action.scope + ')!'); }
+      } else {window.kaleidocafe.actionSound("error.ogg"); window.battleLog('Invalid target for action (must be used on ' + action.scope + ')!'); }
        
-  	} else { actionSound("error.ogg"); battleLog('Action is not selected!'); }
+  	} else {window.kaleidocafe.actionSound("error.ogg"); window.battleLog('Action is not selected!'); }
       
-  } else { actionSound("error.ogg"); battleLog('Enemy turn!'); }
+  } else {window.kaleidocafe.actionSound("error.ogg"); window.battleLog('Enemy turn!'); }
 };
 
 // ---- AI turn function
-function ai_make_turn(aihost)
+window.kaleidocafe.ai_make_turn = function(aihost)
 {
   
   	//Selecting action
    	let filtered_actions = aihost.actions.filter((action) => action.cooldown_cur == 0 && action.mpcost <= aihost.mana_cur && action.hpcost<=aihost.health_cur && action.tpcost <= aihost.tp);
   
-    let final_action = filtered_actions[getRandomInt(0,filtered_actions.length)];
+    let final_action = filtered_actions[window.helper.getRandomInt(0,filtered_actions.length)];
   
   
   	//Selecting target
@@ -1538,18 +1545,18 @@ function ai_make_turn(aihost)
       if (state.active.variables.TBS_chars[st].is_enemy == false && state.active.variables.TBS_chars[st].joined == true) { filtered_target_ids.push(st); }
     }
     
-    let final_target_id = filtered_target_ids[getRandomInt(0,filtered_target_ids.length)];
+    let final_target_id = filtered_target_ids[window.helper.getRandomInt(0,filtered_target_ids.length)];
   	let final_target = state.active.variables.TBS_chars[final_target_id];
     
   	// Enemy ai copy of using action function
-    sleep(1000).then(() => {
+    window.helper.sleep(1000).then(() => {
   			//--TODO check for action scope (one target or all group)
   
   			// action effect and sound
-  			actionEffect('char_' + final_target_id, final_action.animation);
-  			actionSound(final_action.sound);    
+  			window.kaleidocafe.actionEffect('char_' + final_target_id, final_action.animation);
+  			window.kaleidocafe.actionSound(final_action.sound);    
   
-  			executeAction(final_action,aihost,final_target);
+  			window.kaleidocafe.executeAction(final_action,aihost,final_target);
   
     		//event for character status effects - ON_TURN_END
   			for (let ss=0;ss<aihost.statuses.length;ss++)
@@ -1558,23 +1565,23 @@ function ai_make_turn(aihost)
   			}
             
   			state.active.variables.TBS_queue[0].initiative = Math.floor(1000/state.active.variables.TBS_queue[0].speed);
-  			sortInitiative();
+  			window.kaleidocafe.sortInitiative();
   
   			window.battleUpdate(final_action.animtime);
   
       });
-}
+};
 
 // ---- Global Battle Update Function (Initial Battle Start)
 window.battleUpdate = function(time) 
 {
      
-      sleep(time).then(() => {
+      window.helper.sleep(time).then(() => {
         
-        wikifyQueuePanel();
-        wikifyActionPanel();
-        wikifyAllyPanel();
-        wikifyEnemyPanel();
+        window.wikifyQueuePanel();
+        window.wikifyActionPanel();
+        window.wikifyAllyPanel();
+        window.wikifyEnemyPanel();
         
         
       });
@@ -1583,15 +1590,15 @@ window.battleUpdate = function(time)
 };
 
 // ---- Battle log function
-function battleLog(text)
+window.battleLog = function(text)
 {
   
   document.getElementById('battle_log').innerHTML += text + '\n';
   document.getElementById('battle_log').scrollTop = document.getElementById('battle_log').scrollHeight;
-}
+};
 
 // ---- Inflict Damage function (with statuses processing)
-function inflictDamage(host,target,damage) {
+window.helper.inflictDamage = function(host,target,damage) {
 	
   var inflictingDamage = new TBS_DmgCon(Math.floor(damage.physical),Math.floor(damage.energy),Math.floor(damage.astral),Math.floor(damage.mental),Math.floor(damage.golden),Math.floor(damage.chaos),Math.floor(damage.absolute));
     
@@ -1650,15 +1657,16 @@ function inflictDamage(host,target,damage) {
   
   return TotalInflictedDamage;
   
-}
+};
 
 // ---- Sleep function implementation
-function sleep(ms) {
+window.helper.sleep = function(ms) 
+{
 	return new Promise(resolve => setTimeout(resolve, ms));
-}
+};
 
 // ##### TRAY start #####################################################################
-function Character_Tray() 
+window.kaleidocafe.Characters.Character_Tray = function() 
 { 
   var Tray = new TBS_combatant();
   Tray.name = "Трей"; 
@@ -1701,14 +1709,14 @@ function Character_Tray()
   	{
     	//100% atk phy+mag damage (20% variance)
         var Crit="";
-    	var Dmg=getDamageWithVariance(host.atk,20); 
+    	var Dmg = window.helper.getDamageWithVariance(host.atk,20); 
     	if (Math.random()*100<=host.critchance) { Dmg=Dmg*(host.critdmg/100); Crit="  <font color=\"#F7DC6F\">﴾Критический удар﴿</font>"}
     
       	var TotalDamage = new TBS_DmgCon( Dmg/2, 0, Dmg/2, 0,0,0,0);
     
-    	var inflicted_dmg = inflictDamage(host,target,TotalDamage);
+    	var inflicted_dmg = window.helper.inflictDamage(host,target,TotalDamage);
     
-   	  	battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ TrayAction_LancetShot.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font> и наносит ' + inflicted_dmg + ' <img src=\"Images/dmg_physical.png\" width=\"24\"><img src=\"Images/dmg_astral.png\" width=\"24\"> урона'+Crit);
+   	  	window.battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ TrayAction_LancetShot.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font> и наносит ' + inflicted_dmg + ' <img src=\"Images/dmg_physical.png\" width=\"24\"><img src=\"Images/dmg_astral.png\" width=\"24\"> урона'+Crit);
     };
   Tray.actions.push(TrayAction_LancetShot);
   // ===========================================================
@@ -1738,7 +1746,7 @@ function Character_Tray()
   
     	host.statuses.push(clarityBuff);
     
-   	  	battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ TrayAction_Clarity.name + '</b></font>');
+   	  	window.battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ TrayAction_Clarity.name + '</b></font>');
     };
   Tray.actions.push(TrayAction_Clarity);
   // ============================================================
@@ -1764,7 +1772,7 @@ function Character_Tray()
     	let shield_power = 20 + Math.floor(host.atk*2);
     	target.shield = Math.max(target.shield, shield_power);
     
-     	battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ TrayAction_Shield.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font> и накладывает щит мощностью ' + shield_power);
+     	window.battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ TrayAction_Shield.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font> и накладывает щит мощностью ' + shield_power);
     };
   Tray.actions.push(TrayAction_Shield);
   // ============================================================
@@ -1790,7 +1798,7 @@ function Character_Tray()
     	let Heal_power = Math.floor(target.health_max*0.1);
     	target.health_cur = Math.min(target.health_max, Heal_power + target.health_cur);
     
-     	battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ TrayAction_Heal.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font> и восстанавливает ' + Heal_power+' здоровья');
+     	window.battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ TrayAction_Heal.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font> и восстанавливает ' + Heal_power+' здоровья');
     };
   Tray.actions.push(TrayAction_Heal);
   // ============================================================
@@ -1814,14 +1822,14 @@ function Character_Tray()
   	{
     	//100% atk phy+mag damage (20% variance)
         var Crit="";
-    	var Dmg=getDamageWithVariance(host.atk * 2.5, 40); 
+    	var Dmg=window.helper.getDamageWithVariance(host.atk * 2.5, 40); 
     	if (Math.random()*100<=host.critchance) { Dmg=Dmg*(host.critdmg/100); Crit="  <font color=\"#F7DC6F\">﴾Критический удар﴿</font>"}
     
       	var TotalDamage = new TBS_DmgCon( 0, Dmg/2, Dmg/2, 0,0,0,0);
     
-    	var inflicted_dmg = inflictDamage(host,target,TotalDamage);
+    	var inflicted_dmg = window.helper.inflictDamage(host,target,TotalDamage);
     
-   	  	battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ TrayAction_Fulmine.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font> и наносит ' + inflicted_dmg + ' <img src=\"Images/dmg_energy.png\" width=\"24\"><img src=\"Images/dmg_astral.png\" width=\"24\"> урона'+Crit);
+   	  	window.battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ TrayAction_Fulmine.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font> и наносит ' + inflicted_dmg + ' <img src=\"Images/dmg_energy.png\" width=\"24\"><img src=\"Images/dmg_astral.png\" width=\"24\"> урона'+Crit);
     };
   Tray.actions.push(TrayAction_Fulmine);
   // ===========================================================
@@ -1833,7 +1841,7 @@ function Character_Tray()
 // ####### TRAY end ################################################################################
 
 // ####### HOLY start ################################################################################
-function Character_Holy() 
+window.kaleidocafe.Characters.Character_Holy = function() 
 { 
   var Holy = new TBS_combatant();
   Holy.name = "Холи"; 
@@ -1880,14 +1888,14 @@ function Character_Holy()
     {
     	//3 x 50% atk ph+en damage (10% variance)
         var Crit="";
-    	var Dmg=getDamageWithVariance( host.atk * 0.5, 10); 
+    	var Dmg=window.helper.getDamageWithVariance( host.atk * 0.5, 10); 
     	if (Math.random()*100<=host.critchance) { Dmg=Dmg*(host.critdmg/100); Crit="  <font color=\"#F7DC6F\">﴾Критический удар﴿</font>"}
     	var TotalDamage = new TBS_DmgCon( Dmg/2, Dmg/2, 0, 0,0,0,0);
         
-    	inflicted_dmg = inflicted_dmg + inflictDamage(host,target,TotalDamage);
+    	inflicted_dmg = inflicted_dmg + window.helper.inflictDamage(host,target,TotalDamage);
 	}
 
-   	  	battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ HolyAction_BajiQuanStyle.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font> и наносит ' + inflicted_dmg + ' <img src=\"Images/dmg_physical.png\" width=\"24\"><img src=\"Images/dmg_energy.png\" width=\"24\"> урона'+Crit);
+   	  	window.battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ HolyAction_BajiQuanStyle.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font> и наносит ' + inflicted_dmg + ' <img src=\"Images/dmg_physical.png\" width=\"24\"><img src=\"Images/dmg_energy.png\" width=\"24\"> урона'+Crit);
       
   };
   
@@ -1900,7 +1908,7 @@ function Character_Holy()
 // ####### HOLY end ################################################################################
 
 // ####### DAMIAN start ################################################################################
-function Character_Damian() 
+window.kaleidocafe.Characters.Character_Damian = function() 
 { 
   var Damian = new TBS_combatant();
   Damian.name = "Дэмиан"; 
@@ -1943,13 +1951,13 @@ function Character_Damian()
   	{
     	//10 + 100% atk phy+mag damage (20% variance)
         var Crit="";
-    	var Dmg=getDamageWithVariance(host.atk,10); 
+    	var Dmg = window.helper.getDamageWithVariance(host.atk,10); 
     	if (Math.random()*100<=host.critchance) { Dmg=Dmg*(host.critdmg/100); Crit="  <font color=\"#F7DC6F\">﴾Критический удар﴿</font>"}
     	var TotalDamage = new TBS_DmgCon( Dmg, 0, 0, 0,0,0,0);
         
-    	var inflicted_dmg = inflictDamage(host,target,TotalDamage);
+    	var inflicted_dmg = window.helper.inflictDamage(host,target,TotalDamage);
     
-   	  	battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ DamianAction_SteelPunch.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font> и наносит ' + inflicted_dmg + ' <img src=\"Images/dmg_physical.png\" width=\"24\"> урона'+Crit);
+   	  	window.battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ DamianAction_SteelPunch.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font> и наносит ' + inflicted_dmg + ' <img src=\"Images/dmg_physical.png\" width=\"24\"> урона'+Crit);
       
     };
   
@@ -1962,7 +1970,7 @@ function Character_Damian()
 // ####### DAMIAN end ################################################################################
 
 // ####### ILICIELE start ################################################################################
-function Character_Iliciele() 
+window.kaleidocafe.Characters.Character_Iliciele = function() 
 { 
   var Iliciele = new TBS_combatant();
   Iliciele.name = "Илисиэль"; 
@@ -2023,13 +2031,13 @@ function Character_Iliciele()
   IlicieleAction_UnstoppableForce.scope = "enemy_single";
   IlicieleAction_UnstoppableForce.formula = function(host,target)  // action specific events
   	{
-    	var Dmg=getDamageWithVariance( host.atk*2 + target.health_max*0.1, 10); 
+    	var Dmg=window.helper.getDamageWithVariance( host.atk*2 + target.health_max*0.1, 10); 
     
     	var TotalDamage = new TBS_DmgCon(0, 0, 0, 0, 0, 0, Dmg);
         
-    	var inflicted_dmg = inflictDamage(host,target,TotalDamage);
+    	var inflicted_dmg = window.helper.inflictDamage(host,target,TotalDamage);
     
-   	  	battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ IlicieleAction_UnstoppableForce.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font> и наносит ' + inflicted_dmg + ' <img src=\"Images/dmg_absolute.png\" width=\"24\"> урона');
+   	  	window.battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ IlicieleAction_UnstoppableForce.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font> и наносит ' + inflicted_dmg + ' <img src=\"Images/dmg_absolute.png\" width=\"24\"> урона');
       
     };
   
@@ -2057,9 +2065,9 @@ function Character_Iliciele()
     
     	var TotalDamage = new TBS_DmgCon(0, 0, 0, 0, 0, Dmg, 0);
         
-    	var inflicted_dmg = inflictDamage(host,target,TotalDamage);
+    	var inflicted_dmg = window.helper.inflictDamage(host,target,TotalDamage);
     
-   	  	battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ IlicieleAction_Demi.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font> и наносит ' + inflicted_dmg + ' <img src=\"Images/dmg_chaos.png\" width=\"24\"> урона');
+   	  	window.battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ IlicieleAction_Demi.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font> и наносит ' + inflicted_dmg + ' <img src=\"Images/dmg_chaos.png\" width=\"24\"> урона');
       
     };
   
@@ -2092,7 +2100,7 @@ function Character_Iliciele()
     
     	state.active.variables.TBS_queue[state.active.variables.TBS_queue.findIndex(x => x.name == target.name)].initiative=0;
     
-   	  	battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ IlicieleAction_MarkOfHermes.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font>');
+   	  	window.battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ IlicieleAction_MarkOfHermes.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font>');
     };
   Iliciele.actions.push(IlicieleAction_MarkOfHermes);
   // ============================================================
@@ -2118,8 +2126,8 @@ function Character_Iliciele()
     	let Heal_power = Math.floor(target.health_max*0.4);
     	target.health_cur = Math.min(target.health_max, Heal_power + target.health_cur);
     
-     	battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ IlicieleAction_Raise.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font> и восстанавливает ' + Heal_power+' здоровья');
-		battleLog('</font> на <font text-color="grey"><b>' + target.name + '</b></font> возвращается в строй');
+     	window.battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ IlicieleAction_Raise.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font> и восстанавливает ' + Heal_power+' здоровья');
+		window.battleLog('</font> на <font text-color="grey"><b>' + target.name + '</b></font> возвращается в строй');
     };
   Iliciele.actions.push(IlicieleAction_Raise);
   // ============================================================
@@ -2131,7 +2139,7 @@ function Character_Iliciele()
 // ####### ILICIELE end ################################################################################
 
 // ####### Arken start ################################################################################
-function Character_Arken() 
+window.kaleidocafe.Characters.Character_Arken = function() 
 { 
   var arken = new TBS_combatant();
   arken.name = "Аркен"; 
@@ -2167,7 +2175,7 @@ function Character_Arken()
 // ####### Arken end ################################################################################
 
 // ####### Echo start ################################################################################
-function Character_Echo() 
+window.kaleidocafe.Characters.Character_Echo = function() 
 { 
   var Echo = new TBS_combatant();
   Echo.name = "Эхо"; 
@@ -2217,9 +2225,9 @@ function Character_Echo()
     
       	var TotalDamage = new TBS_DmgCon( Dmg/2, 0, 0, Dmg/2,0,0,0);
     
-    	var inflicted_dmg = inflictDamage(host,target,TotalDamage);
+    	var inflicted_dmg = window.helper.inflictDamage(host,target,TotalDamage);
     
-   	  	battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ EchoAction_TelekineticPush.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font> и наносит ' + inflicted_dmg + ' <img src=\"Images/dmg_physical.png\" width=\"24\"><img src=\"Images/dmg_mental.png\" width=\"24\"> урона'+Crit);
+   	  	window.battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ EchoAction_TelekineticPush.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font> и наносит ' + inflicted_dmg + ' <img src=\"Images/dmg_physical.png\" width=\"24\"><img src=\"Images/dmg_mental.png\" width=\"24\"> урона'+Crit);
     };
   
   Echo.actions.push(EchoAction_TelekineticPush);
@@ -2231,7 +2239,7 @@ function Character_Echo()
 // ####### Echo end ################################################################################
 
 // ####### Mate start ################################################################################
-function Character_Mate() 
+window.kaleidocafe.Characters.Character_Mate = function() 
 { 
   var Mate = new TBS_combatant();
   Mate.name = "Мэйт"; 
@@ -2267,7 +2275,7 @@ function Character_Mate()
 // ####### Mate end ################################################################################
 
 // ---- Daisa-7 Actions
-function Character_Daisa7() 
+window.kaleidocafe.Characters.Character_Daisa7 = function() 
 { 
   var Daisa7 = new TBS_combatant();
   Daisa7.name = "Дайса-7"; 
@@ -2312,15 +2320,15 @@ function Character_Daisa7()
     	//10 + 100% atk phy+mag damage (20% variance)
         var Crit="";
     
-    	var Dmg=getDamageWithVariance( host.atk, 30); 
+    	var Dmg=window.helper.getDamageWithVariance( host.atk, 30); 
     
     	if (Math.random()*100<=host.critchance) { Dmg=Dmg*(host.critdmg/100); Crit="  <font color=\"#F7DC6F\">﴾Критический удар﴿</font>"}
     
     	var TotalDamage = new TBS_DmgCon( 0, Dmg, 0, 0,0,0,0);
         
-    	var inflicted_dmg = inflictDamage(host,target,TotalDamage);
+    	var inflicted_dmg = window.helper.inflictDamage(host,target,TotalDamage);
     
-   	  	battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ DaisaAction_EnergyBlast.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font> и наносит ' + inflicted_dmg + ' <img src=\"Images/dmg_physical.png\" width=\"24\"> урона'+Crit);
+   	  	window.battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ DaisaAction_EnergyBlast.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font> и наносит ' + inflicted_dmg + ' <img src=\"Images/dmg_physical.png\" width=\"24\"> урона'+Crit);
       
     };
   
@@ -2333,7 +2341,7 @@ function Character_Daisa7()
 
 
 /* ||||||||||||||||||||||||  Enemy Groups ||||||||||||||||||||||||||||*/
-function activateEnemyGroup(group) 
+window.kaleidocafe.activateEnemyGroup = function(group) 
 {
   // ---- Daisa-7
   if (group == "Daisa-7")
@@ -2343,7 +2351,7 @@ function activateEnemyGroup(group)
   
   
   
-}  
+};  
 
 
 
