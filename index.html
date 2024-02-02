@@ -1118,17 +1118,19 @@ window.wikifyAllyPanel = function()
           var mana_percent=window.helper.minmaxpercent(Math.floor((item.mana_cur/item.mana_max)*100));
           var shield_percent=window.helper.minmaxpercent(Math.floor((item.shield/item.health_max)*100));          
  	   		          
-          wikified_allies=wikified_allies+'<tr><td rowspan="3"><img id="char_'+index+'" class="ally" style="background-image: url(Images/'+item.pic +'.png)" src="Images/transparent.png" onclick="window.kaleidocafe.useAction('+index+')" alt=""></td><td>'+item.name+'</td></tr><tr><td><span class="spell_tooltip"><span class="bar_back" style="border-image:   linear-gradient(to right, white '+shield_percent+'%, #444 '+shield_percent+'%, #444 100%) 2;"><span class="hp_bar" style="width:'+health_percent+'%"></span><span class="mp_bar" style="width:'+mana_percent+'%"></span></span><span class="spell_tooltiptext">HP: '+item.health_cur+' / '+item.health_max+'<br>MP: '+item.mana_cur+' / '+item.mana_max+'<br>SH: '+item.shield+'</span></span></td></tr><tr>';
+          wikified_allies=wikified_allies+'<tr><td rowspan="3"><img id="char_'+index+'" class="ally" style="background-image: url(Images/'+item.pic +'.png)" src="Images/transparent.png" onclick="window.kaleidocafe.useAction('+index+')" alt=""></td><td>'+item.name+'</td></tr><tr><td><span class="spell_tooltip"><span class="bar_back" style="border-image:   linear-gradient(to right, white '+shield_percent+'%, #444 '+shield_percent+'%, #444 100%) 2;"><span class="hp_bar" style="width:'+health_percent+'%"></span><span class="mp_bar" style="width:'+mana_percent+'%"></span></span><span class="spell_tooltiptext">HP: '+item.health_cur+' / '+item.health_max+'<br>MP: '+item.mana_cur+' / '+item.mana_max+'<br>SH: '+item.shield+'</span></span></td></tr><tr><td>';
+          
+        
           
           for (var sb=0;sb<item.statuses.length;sb++)
           {
             if (item.statuses[sb].visible)
             {
-            	wikified_allies=wikified_allies+'<td>'+'<span class="spell_tooltip"><img width="16" height="16" src="Images/'+item.statuses[sb].pic+'"><span class="spell_tooltiptext">'+item.statuses[sb].name+'</span></span>'+'</td>'
+            	wikified_allies=wikified_allies+'<span class="spell_tooltip"><img width="16" height="16" src="Images/'+item.statuses[sb].pic+'"><span class="spell_tooltiptext">'+item.statuses[sb].name+'</span></span>';
             }
           }
           
-          wikified_allies = wikified_allies + '</tr>';
+          wikified_allies = wikified_allies + '</td></tr>';
           
   		}
 	}
@@ -1158,17 +1160,17 @@ window.wikifyEnemyPanel = function()
           
           
  	   		
-          	wikified_enemies = wikified_enemies + '<td><tr><td><img id="char_'+index+'" class="'+item.pic+'" onclick="window.kaleidocafe.useAction('+index+')" src="Images//transparent.png" alt=""></td></tr><tr><td>'+item.name+'</td></tr><tr><td><span class="spell_tooltip"><span class="bar_back"><span class="hp_bar" style="width:'+health_percent+'%"></span><span class="mp_bar" style="width:'+mana_percent+'%"></span></span><span class="spell_tooltiptext">HP: '+item.health_cur+' / '+item.health_max+'<br>MP: '+item.mana_cur+' / '+item.mana_max+'<br>SH: '+item.shield+'</span></span></td></tr><tr>';
+          	wikified_enemies = wikified_enemies + '<td><tr><td><img id="char_'+index+'" class="'+item.pic+'" onclick="window.kaleidocafe.useAction('+index+')" src="Images//transparent.png" alt=""></td></tr><tr><td>'+item.name+'</td></tr><tr><td><span class="spell_tooltip"><span class="bar_back"><span class="hp_bar" style="width:'+health_percent+'%"></span><span class="mp_bar" style="width:'+mana_percent+'%"></span></span><span class="spell_tooltiptext">HP: '+item.health_cur+' / '+item.health_max+'<br>MP: '+item.mana_cur+' / '+item.mana_max+'<br>SH: '+item.shield+'</span></span></td></tr><tr><td>';
           
           	for (var sb=0;sb<item.statuses.length;sb++)
           	{
             	if (item.statuses[sb].visible)
             	{
-            		wikified_enemies = wikified_enemies +'<td>'+'<span class="spell_tooltip"><img width="16" height="16" src="Images/'+item.statuses[sb].pic+'"><span class="spell_tooltiptext">'+item.statuses[sb].name+'</span></span>'+'</td>'
+            		wikified_enemies = wikified_enemies +'<span class="spell_tooltip"><img width="16" height="16" src="Images/'+item.statuses[sb].pic+'"><span class="spell_tooltiptext">'+item.statuses[sb].name+'</span></span>';
             	}
           	}
           
-          	wikified_enemies = wikified_enemies + '</tr>';
+          	wikified_enemies = wikified_enemies + '</td></tr>';
           
   		}
 	}
