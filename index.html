@@ -972,6 +972,7 @@ class TBS_status
   on_turn_start = function(){};
   on_turn_end = function(){};
   on_duration_end = function(){};
+  on_cancel = function(){};
 }
 //DamageContainer class
 class TBS_DmgCon
@@ -1596,20 +1597,22 @@ window.kaleidocafe.useAction = function(targetid)
 					window.kaleidocafe.actionEffect('char_'+targetid, action.animation, action.animtime);
 					window.kaleidocafe.actionSound(action.sound);    
   					window.kaleidocafe.executeAction(action,host,target);
+					
+					action.cooldown_cur = action.cooldown;
+					state.active.variables.TBS_selectedAction = -1;
+  
+					//event for character status effects - ON_TURN_END and ON_DURATION_END
+					for (let ssd=host.statuses.length-1;ssd>=0;ssd--)
+					{
+						if (host.statuses[ssd].duration != -1) // -1 is for infinite statuses
+						{
+							if (host.statuses[ssd].duration == 0) { host.statuses[ssd].on_duration_end(host,ssd); host.statuses.splice(ssd,1); } else { host.statuses[ssd].duration-=1; host.statuses[ssd].on_turn_end();}
+						}
+					}	
           		
 				}
 				
-				action.cooldown_cur = action.cooldown;
-  				state.active.variables.TBS_selectedAction = -1;
-  
-  				//event for character status effects - ON_TURN_END and ON_DURATION_END
-				for (let ssd=host.statuses.length-1;ssd>=0;ssd--)
-				{
-					if (host.statuses[ssd].duration != -1) // -1 is for infinite statuses
-					{
-						if (host.statuses[ssd].duration == 0) { host.statuses[ssd].on_duration_end(host,ssd); host.statuses.splice(ssd,1); } else { host.statuses[ssd].duration-=1; host.statuses[ssd].on_turn_end();}
-					}
-				}
+				
               
             	
   				state.active.variables.TBS_queue[0].initiative = Math.floor(1000/host.speed);
@@ -2349,15 +2352,48 @@ window.kaleidocafe.Characters.Character_Echo = function()
   EchoAction_BattleMeditation.cooldown_cur=0;
   EchoAction_BattleMeditation.formula = function(host,target)  // action specific events
   	{
-		var battlemeditationBuff = new TBS_status(); battlemeditationBuff.name="Battle Meditation"; battlemeditationBuff.description="Точность +100%<br>Уворот +100%"; battlemeditationBuff.pic="buff_battlemeditation.png"; battlemeditationBuff.animation=""; battlemeditationBuff.visible=true; battlemeditationBuff.duration=3; battlemeditationBuff.value=[target.accuracy*1,target.evasion*1]; battlemeditationBuff.on_duration_end = function(owner,statusid){owner.accuracy = owner.accuracy - owner.statuses[statusid].value[0]; owner.evasion = owner.evasion - owner.statuses[statusid].value[1];}; 
-  
-  
-    	target.accuracy = target.accuracy * 2; 
-		target.evasion = target.evasion * 2;
+		if (host.name == target.name)
+		{
+			var battlemeditationBuffOwner = new TBS_status(); battlemeditationBuffOwner.name="Battle Meditation Aura"; battlemeditationBuffOwner.description="Точность +100%<br>Уворот +100%"; battlemeditationBuffOwner.pic="buff_battlemeditation.png"; battlemeditationBuffOwner.animation=""; battlemeditationBuffOwner.visible=true; battlemeditationBuffOwner.duration=3; battlemeditationBuffOwner.value=[target.accuracy*1,target.evasion*1]; 
+			battlemeditationBuffOwner.on_duration_end = function(owner,statusid)
+			{
+				owner.accuracy = owner.accuracy - owner.statuses[statusid].value[0]; 
+				owner.evasion = owner.evasion - owner.statuses[statusid].value[1];
+					
+				let Allies = state.active.variables.TBS_chars.filter(x => x.joined == true && x.is_enemy == false && x.statuses.some(y => y.name == "Battle Meditation"));
+										
+				for (let z=0;z<Allies.length;z++)
+				{
+					let SomeStatusID = Allies[z].statuses.findIndex(v => v.name == "Battle Meditation");
+						
+					Allies[z].statuses[SomeStatusID].on_cancel(Allies[z], SomeStatusID);
+					Allies[z].statuses.splice(SomeStatusID, 1);
+				}
+					
+			}; 
+				
+			target.accuracy = target.accuracy * 2; 
+			target.evasion = target.evasion * 2;
 		
-    	target.statuses.push(battlemeditationBuff);
+			target.statuses.push(battlemeditationBuffOwner);	
+			window.battleLog('<font color="cyan"><b>' + target.name + '</b></font> получает эффект: <font color="yellow"><b>' + battlemeditationBuffOwner.name + '</b></font>');
+		}	
+		else
+		{
+			var battlemeditationBuff = new TBS_status(); battlemeditationBuff.name="Battle Meditation"; battlemeditationBuff.description="Точность +100%<br>Уворот +100%"; battlemeditationBuff.pic="buff_battlemeditation.png"; battlemeditationBuff.animation=""; battlemeditationBuff.visible=true; battlemeditationBuff.duration=-1; battlemeditationBuff.value=[target.accuracy*1,target.evasion*1]; battlemeditationBuff.on_cancel = function(owner,statusid){owner.accuracy = owner.accuracy - owner.statuses[statusid].value[0]; owner.evasion = owner.evasion - owner.statuses[statusid].value[1];}; 	
+			
+			target.accuracy = target.accuracy * 2; 
+			target.evasion = target.evasion * 2;
+		
+			target.statuses.push(battlemeditationBuff);
+			window.battleLog('<font color="cyan"><b>' + target.name + '</b></font> получает эффект: <font color="yellow"><b>' + battlemeditationBuff.name + '</b></font>');
+		}
+		
+  
+  
+    	
     
-   	  window.battleLog('<font color="cyan"><b>' + target.name + '</b></font> получает эффект: <font color="yellow"><b>' + battlemeditationBuff.name + '</b></font>');
+   	  
     };
   Echo.actions.push(EchoAction_BattleMeditation);
   // ============================================================
@@ -2412,7 +2448,7 @@ window.kaleidocafe.Characters.Character_Daisa7 = function()
   Daisa7.is_enemy=true;
   Daisa7.pic="daisa";
   Daisa7.health_max=450; Daisa7.health_cur=450;
-  Daisa7.health_mana=0; Daisa7.mana_cur=0;   
+  Daisa7.mana_max=0; Daisa7.mana_cur=0;   
   Daisa7.atk=20;
   Daisa7.tp=0;
   Daisa7.shield=0;
