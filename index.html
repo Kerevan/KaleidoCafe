@@ -2200,7 +2200,7 @@ window.kaleidocafe.Characters.Character_Iliciele = function()
   IlicieleAction_MarkOfHermes.formula = function(host,target)  // action specific events
   	{
     
-    	var MarkOfHermesBuff = new TBS_status(); MarkOfHermesBuff.name="Mark Of Hermes"; MarkOfHermesBuff.description="Скорость +100%"; MarkOfHermesBuff.pic="action_markofhermes.png"; MarkOfHermesBuff.animation="MarkOfHermes.webp"; MarkOfHermesBuff.visible=true; MarkOfHermesBuff.duration=5; MarkOfHermesBuff.value=host.speed*1; MarkOfHermesBuff.on_duration_end = function(owner,statusid){owner.speed = owner.speed - owner.statuses[statusid].value;}; 
+    	var MarkOfHermesBuff = new TBS_status(); MarkOfHermesBuff.name="Mark Of Hermes"; MarkOfHermesBuff.description="Скорость +100%"; MarkOfHermesBuff.pic="buff_speed.png"; MarkOfHermesBuff.animation="MarkOfHermes.webp"; MarkOfHermesBuff.visible=true; MarkOfHermesBuff.duration=5; MarkOfHermesBuff.value=host.speed*1; MarkOfHermesBuff.on_duration_end = function(owner,statusid){owner.speed = owner.speed - owner.statuses[statusid].value;}; 
     
     	target.speed = target.speed * 2;
   
