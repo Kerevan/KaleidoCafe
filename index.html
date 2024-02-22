@@ -2489,18 +2489,25 @@ window.kaleidocafe.Characters.Character_Daisa7 = function()
   DaisaAction_EnergyBlast.formula = function(host,target)  // action specific events
   	{
     	//10 + 100% atk phy+mag damage (20% variance)
-        var Crit="";
+        let Crit="";
     
-    	var Dmg=window.helper.getDamageWithVariance( host.atk, 30); 
+    	let Dmg=window.helper.getDamageWithVariance( host.atk, 30); 
     
     	if (Math.random()*100<=host.critchance) { Dmg=Dmg*(host.critdmg/100); Crit="  <font color=\"#F7DC6F\">﴾Критический удар﴿</font>"}
     
-    	var TotalDamage = new TBS_DmgCon( 0, Dmg, 0, 0,0,0,0);
-        
-    	var inflicted_dmg = window.helper.inflictDamage(host,target,TotalDamage);
+    	let TotalDamage = new TBS_DmgCon( 0, Dmg, 0, 0,0,0,0);
     
-   	  	window.battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ DaisaAction_EnergyBlast.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font> и наносит ' + inflicted_dmg + ' <img src=\"Images/dmg_physical.png\" width=\"24\"> урона'+Crit);
-      
+    if ((Math.random()*host.accuracy+host.accuracy/2) >= (Math.random()*target.evasion+target.evasion/2)) 
+    	{
+          let inflicted_dmg = window.helper.inflictDamage(host,target,TotalDamage);
+    
+   	  		window.battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ DaisaAction_EnergyBlast.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font> и наносит ' + inflicted_dmg + ' <img src=\"Images/dmg_physical.png\" width=\"24\"> урона'+Crit);
+    	}
+    else 
+    	{ 
+      		window.battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ DaisaAction_EnergyBlast.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font>. <font text-color="grey"><b>' + target.name + '</b></font> уворачивается, промах.');
+    	}
+    	
     };
   
   // ================================================== 
