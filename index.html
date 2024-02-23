@@ -509,30 +509,30 @@ img.ally:hover {
 
 /*Daisa style*/
 img.daisa {
-  width:200px;
-  height:200px;
+  width:256px;
+  height:256px;
   background-image: url(Images/daisa_full.png);
-  background-size: 200px 200px;
+  background-size: 256px 256px;
 }
 img.daisa:hover {
-  width:200px;
-  height:200px;
+  width:256px;
+  height:256px;
   background-image: url(Images/daisa_full_glow.png);
-  background-size: 200px 200px; 
+  background-size: 256px 256px; 
 }
 /*===========*/
 /*Herald style*/
 img.crimsonherald {
-  width:200px;
-  height:200px;
+  width:256px;
+  height:256px;
   background-image: url(Images/crimsonherald_full.png);
-  background-size: 200px 200px;
+  background-size: 256px 256px;
 }
 img.crimsonherald:hover {
-  width:200px;
-  height:200px;
+  width:256px;
+  height:256px;
   background-image: url(Images/crimsonherald_full_glow.png);
-  background-size: 200px 200px; 
+  background-size: 256px 256px; 
 }
 /*===========*/
 
@@ -1811,7 +1811,7 @@ window.kaleidocafe.Characters.Character_Tray = function()
   // ==== Basic Attack (Lancet Pistol) ========================
   var TrayAction_LancetShot = new TBS_action();
   TrayAction_LancetShot.name="Lancet Shot";
-  TrayAction_LancetShot.desc = function(host) { return "Базовый выстрел из личного пистолета Трея.<br>Урон: <font color=\"yellow\"><b>"+ Math.floor(host.atk*0.8) + " - " + Math.floor(host.atk*1.2) +"</b></font> (<img src=\"Images/dmg_physical.png\" width=\"24\"> <img src=\"Images/dmg_astral.png\" width=\"24\">)<br>Может нанести критический урон: Да."; };
+  TrayAction_LancetShot.desc = function(host) { return "Базовый выстрел из личного пистолета Трея.<br>Урон: <font color=\"yellow\"><b>"+ Math.floor(host.atk*0.8) + " - " + Math.floor(host.atk*1.2) +"</b></font><img src=\"Images/dmg_physical.png\" width=\"24\"><img src=\"Images/dmg_astral.png\" width=\"24\"><br>Может нанести критический урон: Да."; };
   TrayAction_LancetShot.pic="action_lancetshot.png"; 
   TrayAction_LancetShot.animation="lancet_shot.webp";
   TrayAction_LancetShot.animtime=600;
@@ -1826,15 +1826,26 @@ window.kaleidocafe.Characters.Character_Tray = function()
   TrayAction_LancetShot.formula = function(host,target)  // action specific events
   	{
     	//100% atk phy+mag damage (20% variance)
-        var Crit="";
-    	var Dmg = window.helper.getDamageWithVariance(host.atk,20); 
+        let Crit="";
+    	let Dmg = window.helper.getDamageWithVariance(host.atk,20); 
     	if (Math.random()*100<=host.critchance) { Dmg=Dmg*(host.critdmg/100); Crit="  <font color=\"#F7DC6F\">﴾Критический удар﴿</font>"}
     
-      	var TotalDamage = new TBS_DmgCon( Dmg/2, 0, Dmg/2, 0,0,0,0);
+      	let TotalDamage = new TBS_DmgCon( Dmg/2, 0, Dmg/2, 0,0,0,0);
+		
+		let acc = window.helper.getRandomInt(host.accuracy/2, host.accuracy+1); let eva =  window.helper.getRandomInt(target.evasion/2, target.evasion+1);
     
-    	var inflicted_dmg = window.helper.inflictDamage(host,target,TotalDamage);
+		if (acc >= eva) 
+		{
+			var inflicted_dmg = window.helper.inflictDamage(host,target,TotalDamage);
     
-   	  	window.battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ TrayAction_LancetShot.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font> и наносит ' + inflicted_dmg + ' <img src=\"Images/dmg_physical.png\" width=\"24\"><img src=\"Images/dmg_astral.png\" width=\"24\"> урона'+Crit);
+			window.battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ TrayAction_LancetShot.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font> и наносит ' + inflicted_dmg + '<img src=\"Images/dmg_physical.png\" width=\"24\"><img src=\"Images/dmg_astral.png\" width=\"24\"> урона'+Crit);
+		}
+		else
+		{
+			window.battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ TrayAction_LancetShot.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font>. <font text-color="grey"><b>' + target.name + '</b></font> уворачивается, промах.');
+		}
+    
+    	
     };
   Tray.actions.push(TrayAction_LancetShot);
   // ===========================================================
@@ -1939,15 +1950,26 @@ window.kaleidocafe.Characters.Character_Tray = function()
   TrayAction_Fulmine.formula = function(host,target)  // action specific events
   	{
     	//100% atk phy+mag damage (20% variance)
-        var Crit="";
-    	var Dmg=window.helper.getDamageWithVariance(host.atk * 2.5, 40); 
+        let Crit="";
+    	let Dmg=window.helper.getDamageWithVariance(host.atk * 2.5, 40); 
     	if (Math.random()*100<=host.critchance) { Dmg=Dmg*(host.critdmg/100); Crit="  <font color=\"#F7DC6F\"><b>﴾﴾﴾ Критический удар ﴿﴿﴿</b></font>"}
     
-      	var TotalDamage = new TBS_DmgCon( 0, Dmg/2, Dmg/2, 0,0,0,0);
+      	let TotalDamage = new TBS_DmgCon( 0, Dmg/2, Dmg/2, 0,0,0,0);
+		
+		let acc = window.helper.getRandomInt(host.accuracy/2, host.accuracy+1); let eva =  window.helper.getRandomInt(target.evasion/2, target.evasion+1);
     
-    	var inflicted_dmg = window.helper.inflictDamage(host,target,TotalDamage);
+		if (acc >= eva) 
+		{
+			let inflicted_dmg = window.helper.inflictDamage(host,target,TotalDamage);
     
-   	  	window.battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ TrayAction_Fulmine.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font> и наносит ' + inflicted_dmg + ' <img src=\"Images/dmg_energy.png\" width=\"24\"><img src=\"Images/dmg_astral.png\" width=\"24\"> урона'+Crit);
+			window.battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ TrayAction_Fulmine.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font> и наносит ' + inflicted_dmg + ' <img src=\"Images/dmg_energy.png\" width=\"24\"><img src=\"Images/dmg_astral.png\" width=\"24\"> урона'+Crit);
+		}
+		else
+		{
+			window.battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ TrayAction_Fulmine.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font>. <font text-color="grey"><b>' + target.name + '</b></font> уворачивается, промах.');
+		}
+    
+    	
     };
   Tray.actions.push(TrayAction_Fulmine);
   // ===========================================================
@@ -2001,19 +2023,32 @@ window.kaleidocafe.Characters.Character_Holy = function()
   HolyAction_BajiQuanStyle.formula = function(host,target)  // action specific events
   {
     // as this move is three hits we need FOR
-    var inflicted_dmg=0;
+    let inflicted_dmg=0;
     for (let hits=0;hits<3;hits++)
     {
     	//3 x 50% atk ph+en damage (10% variance)
-        var Crit="";
-    	var Dmg=window.helper.getDamageWithVariance( host.atk * 0.5, 10); 
+        let Crit="";
+    	let Dmg=window.helper.getDamageWithVariance( host.atk * 0.5, 10); 
     	if (Math.random()*100<=host.critchance) { Dmg=Dmg*(host.critdmg/100); Crit="  <font color=\"#F7DC6F\"><b>﴾﴾﴾ Критический удар ﴿﴿﴿</b></font>"}
-    	var TotalDamage = new TBS_DmgCon( Dmg/2, Dmg/2, 0, 0,0,0,0);
+    	let TotalDamage = new TBS_DmgCon( Dmg/2, Dmg/2, 0, 0,0,0,0);
         
-    	inflicted_dmg = inflicted_dmg + window.helper.inflictDamage(host,target,TotalDamage);
+		let acc = window.helper.getRandomInt(host.accuracy/2, host.accuracy+1); let eva =  window.helper.getRandomInt(target.evasion/2, target.evasion+1);
+    
+		if (acc >= eva) 
+		{
+			inflicted_dmg = window.helper.inflictDamage(host,target,TotalDamage);
+		
+			window.battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ HolyAction_BajiQuanStyle.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font> и наносит ' + inflicted_dmg + ' <img src=\"Images/dmg_physical.png\" width=\"24\"><img src=\"Images/dmg_energy.png\" width=\"24\"> урона'+Crit);
+		}
+		else
+		{
+			window.battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ HolyAction_BajiQuanStyle.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font>. <font text-color="grey"><b>' + target.name + '</b></font> уворачивается! Промах!');
+		}
+		
+    	
 	}
 
-   	  	window.battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ HolyAction_BajiQuanStyle.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font> и наносит ' + inflicted_dmg + ' <img src=\"Images/dmg_physical.png\" width=\"24\"><img src=\"Images/dmg_energy.png\" width=\"24\"> урона'+Crit);
+   	  	
       
   };
   
@@ -2067,15 +2102,26 @@ window.kaleidocafe.Characters.Character_Damian = function()
   DamianAction_SteelPunch.scope = "enemy_single";
   DamianAction_SteelPunch.formula = function(host,target)  // action specific events
   	{
-    	//10 + 100% atk phy+mag damage (20% variance)
-        var Crit="";
-    	var Dmg = window.helper.getDamageWithVariance(host.atk,10); 
+    	//10 + 100% atk phy+mag damage (20% letiance)
+        let Crit="";
+    	let Dmg = window.helper.getDamageWithVariance(host.atk,10); 
     	if (Math.random()*100<=host.critchance) { Dmg=Dmg*(host.critdmg/100); Crit="  <font color=\"#F7DC6F\">﴾Критический удар﴿</font>"}
-    	var TotalDamage = new TBS_DmgCon( Dmg, 0, 0, 0,0,0,0);
+    	let TotalDamage = new TBS_DmgCon( Dmg, 0, 0, 0,0,0,0);
         
-    	var inflicted_dmg = window.helper.inflictDamage(host,target,TotalDamage);
+		let acc = window.helper.getRandomInt(host.accuracy/2, host.accuracy+1); let eva =  window.helper.getRandomInt(target.evasion/2, target.evasion+1);
     
-   	  	window.battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ DamianAction_SteelPunch.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font> и наносит ' + inflicted_dmg + ' <img src=\"Images/dmg_physical.png\" width=\"24\"> урона'+Crit);
+		if (acc >= eva) 
+		{
+			let inflicted_dmg = window.helper.inflictDamage(host,target,TotalDamage);
+    
+			window.battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ DamianAction_SteelPunch.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font> и наносит ' + inflicted_dmg + ' <img src=\"Images/dmg_physical.png\" width=\"24\"> урона'+Crit);
+		}
+		else
+		{
+			window.battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ DamianAction_SteelPunch.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font>. <font text-color="grey"><b>' + target.name + '</b></font> уворачивается! Промах!');
+		}
+		
+    	
       
     };
   
@@ -2149,11 +2195,11 @@ window.kaleidocafe.Characters.Character_Iliciele = function()
   IlicieleAction_UnstoppableForce.scope = "enemy_single";
   IlicieleAction_UnstoppableForce.formula = function(host,target)  // action specific events
   	{
-    	var Dmg=window.helper.getDamageWithVariance( host.atk*2 + target.health_max*0.1, 10); 
+    	let Dmg=window.helper.getDamageWithVariance( host.atk*2 + target.health_max*0.1, 10); 
     
-    	var TotalDamage = new TBS_DmgCon(0, 0, 0, 0, 0, 0, Dmg);
+    	let TotalDamage = new TBS_DmgCon(0, 0, 0, 0, 0, 0, Dmg);
         
-    	var inflicted_dmg = window.helper.inflictDamage(host,target,TotalDamage);
+    	let inflicted_dmg = window.helper.inflictDamage(host,target,TotalDamage);
     
    	  	window.battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ IlicieleAction_UnstoppableForce.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font> и наносит ' + inflicted_dmg + ' <img src=\"Images/dmg_absolute.png\" width=\"24\"> урона');
       
@@ -2179,11 +2225,11 @@ window.kaleidocafe.Characters.Character_Iliciele = function()
   IlicieleAction_Demi.scope = "enemy_single";
   IlicieleAction_Demi.formula = function(host,target)  // action specific events
   	{
-    	var Dmg= target.health_cur*0.25; 
+    	let Dmg= target.health_cur*0.25; 
     
-    	var TotalDamage = new TBS_DmgCon(0, 0, 0, 0, 0, Dmg, 0);
+    	let TotalDamage = new TBS_DmgCon(0, 0, 0, 0, 0, Dmg, 0);
         
-    	var inflicted_dmg = window.helper.inflictDamage(host,target,TotalDamage);
+    	let inflicted_dmg = window.helper.inflictDamage(host,target,TotalDamage);
     
    	  	window.battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ IlicieleAction_Demi.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font> и наносит ' + inflicted_dmg + ' <img src=\"Images/dmg_chaos.png\" width=\"24\"> урона');
       
@@ -2217,7 +2263,7 @@ window.kaleidocafe.Characters.Character_Iliciele = function()
 		}
 		else
 		{
-			var MarkOfHermesBuff = new TBS_status(); MarkOfHermesBuff.name="Mark Of Hermes"; MarkOfHermesBuff.description="Скорость +100%"; MarkOfHermesBuff.pic="buff_speed.png"; MarkOfHermesBuff.animation="MarkOfHermes.webp"; MarkOfHermesBuff.visible=true; MarkOfHermesBuff.duration=5; MarkOfHermesBuff.value=host.speed*1; MarkOfHermesBuff.on_duration_end = function(owner,statusid){owner.speed = owner.speed - owner.statuses[statusid].value;}; 
+			let MarkOfHermesBuff = new TBS_status(); MarkOfHermesBuff.name="Mark Of Hermes"; MarkOfHermesBuff.description="Скорость +100%"; MarkOfHermesBuff.pic="buff_speed.png"; MarkOfHermesBuff.animation="MarkOfHermes.webp"; MarkOfHermesBuff.visible=true; MarkOfHermesBuff.duration=5; MarkOfHermesBuff.value=host.speed*1; MarkOfHermesBuff.on_duration_end = function(owner,statusid){owner.speed = owner.speed - owner.statuses[statusid].value;}; 
     
 			target.speed = target.speed * 2;
   
@@ -2347,13 +2393,13 @@ window.kaleidocafe.Characters.Character_Echo = function()
   EchoAction_TelekineticPush.formula = function(host,target)  // action specific events
   	{
     	//100% atk phy+men damage (0% variance)
-        var Crit="";
-    	var Dmg = host.atk; 
+        let Crit="";
+    	let Dmg = host.atk; 
     	if (Math.random()*100<=host.critchance) { Dmg=Dmg*(host.critdmg/100); Crit="  <font color=\"#F7DC6F\"><b>﴾﴾﴾ Критический удар ﴿﴿﴿</b></font>"}
     
-      	var TotalDamage = new TBS_DmgCon( Dmg/2, 0, 0, Dmg/2,0,0,0);
+      	let TotalDamage = new TBS_DmgCon( Dmg/2, 0, 0, Dmg/2,0,0,0);
     
-    	var inflicted_dmg = window.helper.inflictDamage(host,target,TotalDamage);
+    	let inflicted_dmg = window.helper.inflictDamage(host,target,TotalDamage);
     
    	  	window.battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ EchoAction_TelekineticPush.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font> и наносит ' + inflicted_dmg + ' <img src=\"Images/dmg_physical.png\" width=\"24\"><img src=\"Images/dmg_mental.png\" width=\"24\"> урона'+Crit);
     };
@@ -2380,7 +2426,7 @@ window.kaleidocafe.Characters.Character_Echo = function()
   	{
 		if (host.name == target.name)
 		{
-			var battlemeditationBuffOwner = new TBS_status(); battlemeditationBuffOwner.name="Battle Meditation Aura"; battlemeditationBuffOwner.description="Точность +100%<br>Уворот +100%"; battlemeditationBuffOwner.pic="buff_battlemeditation.png"; battlemeditationBuffOwner.animation=""; battlemeditationBuffOwner.visible=true; battlemeditationBuffOwner.duration=3; battlemeditationBuffOwner.value=[target.accuracy*1,target.evasion*1]; 
+			let battlemeditationBuffOwner = new TBS_status(); battlemeditationBuffOwner.name="Battle Meditation Aura"; battlemeditationBuffOwner.description="Точность +100%<br>Уворот +100%"; battlemeditationBuffOwner.pic="buff_battlemeditation.png"; battlemeditationBuffOwner.animation=""; battlemeditationBuffOwner.visible=true; battlemeditationBuffOwner.duration=3; battlemeditationBuffOwner.value=[target.accuracy*1,target.evasion*1]; 
 			battlemeditationBuffOwner.on_duration_end = function(owner,statusid)
 			{
 				owner.accuracy = owner.accuracy - owner.statuses[statusid].value[0]; 
@@ -2406,7 +2452,7 @@ window.kaleidocafe.Characters.Character_Echo = function()
 		}	
 		else
 		{
-			var battlemeditationBuff = new TBS_status(); battlemeditationBuff.name="Battle Meditation"; battlemeditationBuff.description="Точность +100%<br>Уворот +100%"; battlemeditationBuff.pic="buff_battlemeditation.png"; battlemeditationBuff.animation=""; battlemeditationBuff.visible=true; battlemeditationBuff.duration=-1; battlemeditationBuff.value=[target.accuracy*1,target.evasion*1]; battlemeditationBuff.on_cancel = function(owner,statusid){owner.accuracy = owner.accuracy - owner.statuses[statusid].value[0]; owner.evasion = owner.evasion - owner.statuses[statusid].value[1];}; 	
+			let battlemeditationBuff = new TBS_status(); battlemeditationBuff.name="Battle Meditation"; battlemeditationBuff.description="Точность +100%<br>Уворот +100%"; battlemeditationBuff.pic="buff_battlemeditation.png"; battlemeditationBuff.animation=""; battlemeditationBuff.visible=true; battlemeditationBuff.duration=-1; battlemeditationBuff.value=[target.accuracy*1,target.evasion*1]; battlemeditationBuff.on_cancel = function(owner,statusid){owner.accuracy = owner.accuracy - owner.statuses[statusid].value[0]; owner.evasion = owner.evasion - owner.statuses[statusid].value[1];}; 	
 			
 			target.accuracy = target.accuracy * 2; 
 			target.evasion = target.evasion * 2;
@@ -2516,14 +2562,16 @@ window.kaleidocafe.Characters.Character_Daisa7 = function()
     	if (Math.random()*100<=host.critchance) { Dmg=Dmg*(host.critdmg/100); Crit="  <font color=\"#F7DC6F\">﴾Критический удар﴿</font>"}
     
     	let TotalDamage = new TBS_DmgCon( 0, Dmg, 0, 0,0,0,0);
+		
+		let acc = window.helper.getRandomInt(host.accuracy/2, host.accuracy+1); let eva =  window.helper.getRandomInt(target.evasion/2, target.evasion+1);
     
-    if ((Math.random()*host.accuracy+host.accuracy/2) >= (Math.random()*target.evasion+target.evasion/2)) 
+		if (acc >= eva) 
     	{
           let inflicted_dmg = window.helper.inflictDamage(host,target,TotalDamage);
     
    	  		window.battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ DaisaAction_EnergyBlast.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font> и наносит ' + inflicted_dmg + ' <img src=\"Images/dmg_physical.png\" width=\"24\"> урона'+Crit);
     	}
-    else 
+		else 
     	{ 
       		window.battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ DaisaAction_EnergyBlast.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font>. <font text-color="grey"><b>' + target.name + '</b></font> уворачивается, промах.');
     	}
@@ -2581,15 +2629,15 @@ window.kaleidocafe.Characters.Character_Herald = function()
   HeraldAction_CrimsonOrb.formula = function(host,target)  // action specific events
   	{
     	//10 + 100% atk phy+mag damage (20% variance)
-        var Crit="";
+        let Crit="";
     
-    	var Dmg=window.helper.getDamageWithVariance( host.atk, 50); 
+    	let Dmg=window.helper.getDamageWithVariance( host.atk, 50); 
     
     	if (Math.random()*100<=host.critchance) { Dmg=Dmg*(host.critdmg/100); Crit="  <font color=\"#F7DC6F\">﴾Критический удар﴿</font>"}
     
-    	var TotalDamage = new TBS_DmgCon( 0, 0, Dmg, 0,0,0,0);
+    	let TotalDamage = new TBS_DmgCon( 0, 0, Dmg, 0,0,0,0);
         
-    	var inflicted_dmg = window.helper.inflictDamage(host,target,TotalDamage);
+    	let inflicted_dmg = window.helper.inflictDamage(host,target,TotalDamage);
     
    	  	window.battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ HeraldAction_CrimsonOrb.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font> и наносит ' + inflicted_dmg + ' <img src=\"Images/dmg_astral.png\" width=\"24\"> урона'+Crit);
       
@@ -3151,7 +3199,7 @@ Evasion: 10
 \
 &lt;&lt;charDialog &quot;libir&quot; &quot;libir_serious.png&quot; &quot;Либир&quot; &quot;Руины уже хорошо изучены, однако многие зоны разделены темпорально, тоесть они находятся в ином времени или вне времени вовсе. Зачастую совершенно невзрачные предметы являются своего рода \&quot;ключами\&quot; от этих зон, с этим нам еще приходится разбираться чтобы получить доступ к этим скрытым зонам. Недавно в одной из таких зон пропал мой робот - Дайса-7, одна из последних разработок доступных Ассоциации. Такое случалось и раньше, но сегодня впервые так долго. Возможно вам удастся встретить его пока вы будете изучать руины.&quot;&gt;&gt;\
 \
-[[Далее...|Ruins_Entrance4]]</tw-passagedata><tw-passagedata pid="71" name="Ruins_Entrance4" tags="desert" position="3200,575" size="200,100">&lt;&lt;charDialog &quot;libir&quot; &quot;libir_tired.png&quot; &quot;Либир&quot; &quot;Ну а главной проблемой является то, что хоть Черные Врата и функциональны, к ним не подается энергия. Как показывают наши датчики в руинах есть источник энергии предназначенный для них, но что-то его блокирует. Придется найти его в темпоральных зонах и восстановить подачу энергии.&quot;&gt;&gt;\
+[[Далее...|Ruins_Entrance4]]</tw-passagedata><tw-passagedata pid="71" name="Ruins_Entrance4" tags="desert" position="3175,575" size="200,100">&lt;&lt;charDialog &quot;libir&quot; &quot;libir_tired.png&quot; &quot;Либир&quot; &quot;Ну а главной проблемой является то, что хоть Черные Врата и функциональны, к ним не подается энергия. Как показывают наши датчики в руинах есть источник энергии предназначенный для них, но что-то его блокирует. Придется найти его в темпоральных зонах и восстановить подачу энергии.&quot;&gt;&gt;\
 \
 &lt;&lt;charDialog &quot;ran&quot; &quot;ran_serious.png&quot; &quot;Ран&quot; &quot;Хочу отметить что использование каких либо источников энергии доступных нам может повредить Врата, поэтому придется разобраться с тем что находится где-то в руинах.&quot;&gt;&gt;\
 \
