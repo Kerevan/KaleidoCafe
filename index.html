@@ -628,6 +628,16 @@ span.mp_bar {
   padding:0px;
 }
 
+span.bartext {
+  display:block;
+  width:100px;
+  height:8px;
+  padding:0px;
+  font-size: 10px;
+  color: white;
+  line-height: 8px;
+}
+
 
 span.bar_back {
   margin:auto;
@@ -1170,7 +1180,7 @@ window.wikifyAllyPanel = function()
           var mana_percent=window.helper.minmaxpercent(Math.floor((item.mana_cur/item.mana_max)*100));
           var shield_percent=window.helper.minmaxpercent(Math.floor((item.shield/item.health_max)*100));          
  	   		          
-          wikified_allies=wikified_allies+'<tr><td rowspan="3"><img id="char_'+index+'" class="ally" style="background-image: url(Images/'+item.pic +'.png)" src="Images/transparent.png" onclick="window.kaleidocafe.useAction('+index+')" alt=""></td><td>'+item.name+'</td></tr><tr><td><span class="spell_tooltip"><span class="bar_back" style="border-image:   linear-gradient(to right, white '+shield_percent+'%, #444 '+shield_percent+'%, #444 100%) 2;"><span class="hp_bar" style="width:'+health_percent+'%"></span><span class="mp_bar" style="width:'+mana_percent+'%"></span></span><span class="spell_tooltiptext">HP: '+item.health_cur+' / '+item.health_max+'<br>MP: '+item.mana_cur+' / '+item.mana_max+'<br>SH: '+item.shield+'</span></span></td></tr><tr><td>';
+          wikified_allies=wikified_allies+'<tr><td rowspan="3"><img id="char_'+index+'" class="ally" style="background-image: url(Images/'+item.pic +'.png)" src="Images/transparent.png" onclick="window.kaleidocafe.useAction('+index+')" alt=""></td><td>'+item.name+'</td></tr><tr><td><span class="spell_tooltip"><span class="bar_back" style="border-image:   linear-gradient(to right, white '+shield_percent+'%, #444 '+shield_percent+'%, #444 100%) 2;"><span class="hp_bar" style="width:'+health_percent+'%"><span class="bartext">'+item.health_cur+' / '+item.health_max+'</span></span><span class="mp_bar" style="width:'+mana_percent+'%"><span class="bartext">'+item.mana_cur+' / '+item.mana_max+'</span></span></span><span class="spell_tooltiptext">HP: '+item.health_cur+' / '+item.health_max+'<br>MP: '+item.mana_cur+' / '+item.mana_max+'<br>SH: '+item.shield+'</span></span></td></tr><tr><td>';
           
         
           
@@ -1212,7 +1222,7 @@ window.wikifyEnemyPanel = function()
           
           
  	   		
-          	wikified_enemies = wikified_enemies + '<td><tr><td><img id="char_'+index+'" class="'+item.pic+'" onclick="window.kaleidocafe.useAction('+index+')" src="Images//transparent.png" alt=""></td></tr><tr><td>'+item.name+'</td></tr><tr><td><span class="spell_tooltip"><span class="bar_back"><span class="hp_bar" style="width:'+health_percent+'%"></span><span class="mp_bar" style="width:'+mana_percent+'%"></span></span><span class="spell_tooltiptext">HP: '+item.health_cur+' / '+item.health_max+'<br>MP: '+item.mana_cur+' / '+item.mana_max+'<br>SH: '+item.shield+'</span></span></td></tr><tr><td>';
+          	wikified_enemies = wikified_enemies + '<td><tr><td><img id="char_'+index+'" class="'+item.pic+'" onclick="window.kaleidocafe.useAction('+index+')" src="Images//transparent.png" alt=""></td></tr><tr><td>'+item.name+'</td></tr><tr><td><span class="spell_tooltip"><span class="bar_back"><span class="hp_bar" style="width:'+health_percent+'%"><span class="bartext">'+item.health_cur+' / '+item.health_max+'</span></span><span class="mp_bar" style="width:'+mana_percent+'%"><span class="bartext">'+item.mana_cur+' / '+item.mana_max+'</span></span></span><span class="spell_tooltiptext">HP: '+item.health_cur+' / '+item.health_max+'<br>MP: '+item.mana_cur+' / '+item.mana_max+'<br>SH: '+item.shield+'</span></span></td></tr><tr><td>';
           
           	for (var sb=0;sb<item.statuses.length;sb++)
           	{
@@ -1489,7 +1499,7 @@ window.wikifyActionPanel = function()
           let cd = 'transparent.png';
           if (host.actions[i].cooldown_cur > 0) { cd = 'cd' + host.actions[i].cooldown_cur + '.png'; }
                     
-          text_wikified = text_wikified + '<td><span class="action_tooltip"><img class="action" id="char_' + CurrentCharID + '_action_' + i + '" onclick="window.kaleidocafe.selectAction('+ i +')" width="50" height="50" style="background-image: url(Images/'+host.actions[i].pic +')" src="Images/' + cd + '"><span class="action_tooltiptext"><b>' + host.actions[i].name + '</b><br>' + host.actions[i].desc + '</span></span></td>';
+          text_wikified = text_wikified + '<td><span class="action_tooltip"><img class="action" id="char_' + CurrentCharID + '_action_' + i + '" onclick="window.kaleidocafe.selectAction('+ i +')" width="50" height="50" style="background-image: url(Images/'+host.actions[i].pic +')" src="Images/' + cd + '"><span class="action_tooltiptext"><b>' + host.actions[i].name + '</b><br>' + host.actions[i].desc(host) + '</span></span></td>';
           
       	}
   
@@ -1801,7 +1811,7 @@ window.kaleidocafe.Characters.Character_Tray = function()
   // ==== Basic Attack (Lancet Pistol) ========================
   var TrayAction_LancetShot = new TBS_action();
   TrayAction_LancetShot.name="Lancet Shot";
-  TrayAction_LancetShot.desc="Базовый выстрел из личного пистолета Трея.<br>Урон: 100% силы атаки (<img src=\"Images/dmg_physical.png\" width=\"24\"> <img src=\"Images/dmg_astral.png\" width=\"24\">) (разброс: ±20%)<br>Может нанести критический урон: Да.";
+  TrayAction_LancetShot.desc = function(host) { return "Базовый выстрел из личного пистолета Трея.<br>Урон: <font color=\"yellow\"><b>"+ Math.floor(host.atk*0.8) + " - " + Math.floor(host.atk*1.2) +"</b></font> (<img src=\"Images/dmg_physical.png\" width=\"24\"> <img src=\"Images/dmg_astral.png\" width=\"24\">)<br>Может нанести критический урон: Да."; };
   TrayAction_LancetShot.pic="action_lancetshot.png"; 
   TrayAction_LancetShot.animation="lancet_shot.webp";
   TrayAction_LancetShot.animtime=600;
@@ -1832,7 +1842,7 @@ window.kaleidocafe.Characters.Character_Tray = function()
   // ==== Clarity ==============================================
   var TrayAction_Clarity = new TBS_action();
   TrayAction_Clarity.name="Clarity";
-  TrayAction_Clarity.desc="Трей, концентрируясь, ищет слабые места у врага, повышая шанс критического удара на 100%, а также сразу восстанавливает 25% маны.<br>4<img src=\"Images/cd.png\" width=\"24\">";
+  TrayAction_Clarity.desc= function(host) {return "Трей, концентрируясь, ищет слабые места у врага, повышая шанс критического удара на <font color=\"yellow\"><b>100%</b></font>, а также сразу восстанавливает <font color=\"cyan\"><b>25%</b></font> маны.<br>4<img src=\"Images/cd.png\" width=\"24\">"; };
   TrayAction_Clarity.pic="action_clarity.png"; 
   TrayAction_Clarity.animation="clarity.webp";
   TrayAction_Clarity.animtime=2180;
@@ -1862,7 +1872,7 @@ window.kaleidocafe.Characters.Character_Tray = function()
   // ==== Shield ================================================
   var TrayAction_Shield = new TBS_action();
   TrayAction_Shield.name="Shield";
-  TrayAction_Shield.desc="Трей, создает небольшой щит вокруг себя или союзника мощностью в 20 + 200% силы атаки.<br>25<img src=\"Images/mana.png\" width=\"24\"><br>Если щит уже наложен то эффект лишь обновляет его.";
+  TrayAction_Shield.desc= function(host) {return "Трей, создает небольшой щит вокруг себя или союзника мощностью в <font color=\"yellow\"><b>"+(20 + Math.floor(host.atk*2))+"</b></font>.<br>25<img src=\"Images/mana.png\" width=\"24\"><br>Если щит уже наложен то эффект лишь обновляет его."; };
   TrayAction_Shield.pic="action_shield1.png"; 
   TrayAction_Shield.animation="shield1.webp";
   TrayAction_Shield.animtime=1880;
@@ -1888,7 +1898,7 @@ window.kaleidocafe.Characters.Character_Tray = function()
   // ==== Heal ================================================
   var TrayAction_Heal = new TBS_action();
   TrayAction_Heal.name="Cura";
-  TrayAction_Heal.desc="Трей восстанавливает 10% здоровья себе или союзнику.<br>15<img src=\"Images/mana.png\" width=\"24\">";
+  TrayAction_Heal.desc= function(host) {return "Трей восстанавливает <font color=\"yellow\"><b>10%</b></font> здоровья себе или союзнику.<br>15<img src=\"Images/mana.png\" width=\"24\">"; };
   TrayAction_Heal.pic="action_heal1.png"; 
   TrayAction_Heal.animation="heal1.webp";
   TrayAction_Heal.animtime=2080;
@@ -1914,7 +1924,7 @@ window.kaleidocafe.Characters.Character_Tray = function()
   // ==== Fulmine ========================
   var TrayAction_Fulmine = new TBS_action();
   TrayAction_Fulmine.name="Fulmine";
-  TrayAction_Fulmine.desc="Магический электрический разряд.<br>Урон: 250% силы атаки (<img src=\"Images/dmg_energy.png\" width=\"24\"> <img src=\"Images/dmg_astral.png\" width=\"24\">) (разброс: ±40%)<br>Может нанести критический урон: Да.<br>20<img src=\"Images/mana.png\" width=\"24\">  2<img src=\"Images/cd.png\" width=\"24\">";
+  TrayAction_Fulmine.desc= function(host) {return "Магический электрический разряд.<br>Урон: <font color=\"yellow\"><b>"+ Math.floor(host.atk*0.6) + " - " + Math.floor(host.atk*1.4) +"</b></font> (<img src=\"Images/dmg_energy.png\" width=\"24\"> <img src=\"Images/dmg_astral.png\" width=\"24\">)<br>Может нанести критический урон: Да.<br>20<img src=\"Images/mana.png\" width=\"24\">  2<img src=\"Images/cd.png\" width=\"24\">"; };
   TrayAction_Fulmine.pic="action_fulmine.png"; 
   TrayAction_Fulmine.animation="fulmine.webp";
   TrayAction_Fulmine.animtime=660;
@@ -1931,7 +1941,7 @@ window.kaleidocafe.Characters.Character_Tray = function()
     	//100% atk phy+mag damage (20% variance)
         var Crit="";
     	var Dmg=window.helper.getDamageWithVariance(host.atk * 2.5, 40); 
-    	if (Math.random()*100<=host.critchance) { Dmg=Dmg*(host.critdmg/100); Crit="  <font color=\"#F7DC6F\">﴾Критический удар﴿</font>"}
+    	if (Math.random()*100<=host.critchance) { Dmg=Dmg*(host.critdmg/100); Crit="  <font color=\"#F7DC6F\"><b>﴾﴾﴾ Критический удар ﴿﴿﴿</b></font>"}
     
       	var TotalDamage = new TBS_DmgCon( 0, Dmg/2, Dmg/2, 0,0,0,0);
     
@@ -1976,7 +1986,7 @@ window.kaleidocafe.Characters.Character_Holy = function()
   // ==== Basic Attack (Steel Punch) ==================
   var HolyAction_BajiQuanStyle = new TBS_action();
   HolyAction_BajiQuanStyle.name="Baji Quan Style";
-  HolyAction_BajiQuanStyle.desc="Базовая серия ударов Холи.<br>Урон: 3 х 50% силы атаки (<img src=\"Images/dmg_physical.png\" width=\"24\"><img src=\"Images/dmg_energy.png\" width=\"24\">) (разброс: ±10%)<br>Может нанести критический урон: Да.";
+  HolyAction_BajiQuanStyle.desc= function(host) {return "Базовая серия ударов Холи.<br>Урон: <font color=\"yellow\"><b>"+3*Math.floor((host.atk * 0.5)*0.9)+" - "+3*Math.floor((host.atk * 0.5)*1.1)+"</b></font> (<img src=\"Images/dmg_physical.png\" width=\"24\"><img src=\"Images/dmg_energy.png\" width=\"24\">) (разброс: ±10%)<br>Может нанести критический урон: Да."; };
   HolyAction_BajiQuanStyle.pic="action_bajiquan.png"; 
   HolyAction_BajiQuanStyle.animation="bajiquan.webp";
   HolyAction_BajiQuanStyle.animtime=780;
@@ -1997,7 +2007,7 @@ window.kaleidocafe.Characters.Character_Holy = function()
     	//3 x 50% atk ph+en damage (10% variance)
         var Crit="";
     	var Dmg=window.helper.getDamageWithVariance( host.atk * 0.5, 10); 
-    	if (Math.random()*100<=host.critchance) { Dmg=Dmg*(host.critdmg/100); Crit="  <font color=\"#F7DC6F\">﴾Критический удар﴿</font>"}
+    	if (Math.random()*100<=host.critchance) { Dmg=Dmg*(host.critdmg/100); Crit="  <font color=\"#F7DC6F\"><b>﴾﴾﴾ Критический удар ﴿﴿﴿</b></font>"}
     	var TotalDamage = new TBS_DmgCon( Dmg/2, Dmg/2, 0, 0,0,0,0);
         
     	inflicted_dmg = inflicted_dmg + window.helper.inflictDamage(host,target,TotalDamage);
@@ -2043,7 +2053,7 @@ window.kaleidocafe.Characters.Character_Damian = function()
   // ==== Basic Attack (Steel Punch) ==================
   var DamianAction_SteelPunch = new TBS_action();
   DamianAction_SteelPunch.name="Steel Punch";
-  DamianAction_SteelPunch.desc="Базовый удар Дэмиана.<br>Урон: 100% силы атаки (<img src=\"Images/dmg_physical.png\" width=\"24\">) (разброс: ±10%)<br>Может нанести критический урон: Да.";
+  DamianAction_SteelPunch.desc= function(host) {return "Базовый удар Дэмиана.<br>Урон: <font color=\"yellow\"><b>"+Math.floor(host.atk*0.9)+" - "+Math.floor(host.atk*1.1)+"</b></font> (<img src=\"Images/dmg_physical.png\" width=\"24\">)<br>Может нанести критический урон: Да."; };
   DamianAction_SteelPunch.pic="action_steelpunch.png"; 
   DamianAction_SteelPunch.animation="steelpunch.webp";
   DamianAction_SteelPunch.animtime=600;
@@ -2125,7 +2135,7 @@ window.kaleidocafe.Characters.Character_Iliciele = function()
   // ==== Basic Attack (Steel Punch) ==================
   var IlicieleAction_UnstoppableForce = new TBS_action();
   IlicieleAction_UnstoppableForce.name="Unstoppable Force";
-  IlicieleAction_UnstoppableForce.desc="Базовый прием Илисиэль.<br>Урон: ??? (<img src=\"Images/dmg_absolute.png\" width=\"24\">) (разброс: ±10%)<br>Может нанести критический урон: ???";
+  IlicieleAction_UnstoppableForce.desc= function(host) {return "Базовый прием Илисиэль.<br>Урон: <font color=\"yellow\"><b>???</b></font><img src=\"Images/dmg_absolute.png\" width=\"24\"><br>Может нанести критический урон: ???"; };
   IlicieleAction_UnstoppableForce.pic="action_force.png"; 
   IlicieleAction_UnstoppableForce.animation="force.webp";
   IlicieleAction_UnstoppableForce.animtime=1460;
@@ -2155,7 +2165,7 @@ window.kaleidocafe.Characters.Character_Iliciele = function()
   // ====  Demi ==================
   var IlicieleAction_Demi = new TBS_action();
   IlicieleAction_Demi.name="Demi";
-  IlicieleAction_Demi.desc="Магия хаоса<br>Урон: 25%<img src=\"Images/dmg_chaos.png\" width=\"24\"> от текущего здоровья цели<br>Может нанести критический урон: Нет";
+  IlicieleAction_Demi.desc= function(host) {return "Магия хаоса<br>Урон: <font color=\"yellow\"><b>25%</b></font><img src=\"Images/dmg_chaos.png\" width=\"24\"> от текущего здоровья цели<br>Может нанести критический урон: Нет"; };
   IlicieleAction_Demi.pic="action_demi.png"; 
   IlicieleAction_Demi.animation="demi.webp";
   IlicieleAction_Demi.animtime=2940;
@@ -2185,7 +2195,7 @@ window.kaleidocafe.Characters.Character_Iliciele = function()
   // ==== MarkOfHermes ==============================================
   var IlicieleAction_MarkOfHermes = new TBS_action();
   IlicieleAction_MarkOfHermes.name="Mark Of Hermes";
-  IlicieleAction_MarkOfHermes.desc="Продвигает очередь цели вперед а также повышает скорость на 100% на 5 ходов.";
+  IlicieleAction_MarkOfHermes.desc= function(host) {return "Продвигает очередь цели вперед а также повышает скорость на <font color=\"yellow\"><b>100%</b></font> на 5 ходов."; };
   IlicieleAction_MarkOfHermes.pic="action_markofhermes.png"; 
   IlicieleAction_MarkOfHermes.animation="markofhermes.webp";
   IlicieleAction_MarkOfHermes.animtime=2360;
@@ -2200,15 +2210,25 @@ window.kaleidocafe.Characters.Character_Iliciele = function()
   IlicieleAction_MarkOfHermes.formula = function(host,target)  // action specific events
   	{
     
-    	var MarkOfHermesBuff = new TBS_status(); MarkOfHermesBuff.name="Mark Of Hermes"; MarkOfHermesBuff.description="Скорость +100%"; MarkOfHermesBuff.pic="buff_speed.png"; MarkOfHermesBuff.animation="MarkOfHermes.webp"; MarkOfHermesBuff.visible=true; MarkOfHermesBuff.duration=5; MarkOfHermesBuff.value=host.speed*1; MarkOfHermesBuff.on_duration_end = function(owner,statusid){owner.speed = owner.speed - owner.statuses[statusid].value;}; 
+		if (target.statuses.some(x => x.name == "Mark Of Hermes"))
+		{
+			target.statuses.filter(x => x.name == "Mark Of Hermes")[0].cooldown=5;
+			window.battleLog('<font color="cyan"><b>' + host.name + '</b></font> продлевает эффект <font color="yellow"><b>'+ IlicieleAction_MarkOfHermes.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font>');
+		}
+		else
+		{
+			var MarkOfHermesBuff = new TBS_status(); MarkOfHermesBuff.name="Mark Of Hermes"; MarkOfHermesBuff.description="Скорость +100%"; MarkOfHermesBuff.pic="buff_speed.png"; MarkOfHermesBuff.animation="MarkOfHermes.webp"; MarkOfHermesBuff.visible=true; MarkOfHermesBuff.duration=5; MarkOfHermesBuff.value=host.speed*1; MarkOfHermesBuff.on_duration_end = function(owner,statusid){owner.speed = owner.speed - owner.statuses[statusid].value;}; 
     
-    	target.speed = target.speed * 2;
+			target.speed = target.speed * 2;
   
-    	target.statuses.push(MarkOfHermesBuff);
+			target.statuses.push(MarkOfHermesBuff);
     
-    	state.active.variables.TBS_queue[state.active.variables.TBS_queue.findIndex(x => x.name == target.name)].initiative=0;
+			state.active.variables.TBS_queue[state.active.variables.TBS_queue.findIndex(x => x.name == target.name)].initiative=0;
     
-   	  	window.battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ IlicieleAction_MarkOfHermes.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font>');
+			window.battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ IlicieleAction_MarkOfHermes.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font>');
+		}
+	
+    	
     };
   Iliciele.actions.push(IlicieleAction_MarkOfHermes);
   // ============================================================
@@ -2216,7 +2236,7 @@ window.kaleidocafe.Characters.Character_Iliciele = function()
 // ==== Raise ================================================
   var IlicieleAction_Raise = new TBS_action();
   IlicieleAction_Raise.name="Altavita";
-  IlicieleAction_Raise.desc="Дыхание жизни восстанавливает 40% здоровья и возвращает в строй.";
+  IlicieleAction_Raise.desc= function(host) {return "Дыхание жизни восстанавливает <font color=\"yellow\"><b>40%</b></font> здоровья и возвращает в строй."; };
   IlicieleAction_Raise.pic="action_altavita.png"; 
   IlicieleAction_Raise.animation="altavita.webp";
   IlicieleAction_Raise.animtime=1380;
@@ -2312,7 +2332,7 @@ window.kaleidocafe.Characters.Character_Echo = function()
   // ==== Basic Attack (Telekinetic Push) ========================
   var EchoAction_TelekineticPush = new TBS_action();
   EchoAction_TelekineticPush.name="Telekinetic Push";
-  EchoAction_TelekineticPush.desc="Базовый прием Эхо.<br>Урон: 100% силы атаки (<img src=\"Images/dmg_physical.png\" width=\"24\"> <img src=\"Images/dmg_mental.png\" width=\"24\">) (разброс: ±0%)<br>Может нанести критический урон: Да.";
+  EchoAction_TelekineticPush.desc= function(host) {return "Базовый прием Эхо.<br>Урон: <font color=\"yellow\"><b>"+host.atk+"</b></font><img src=\"Images/dmg_physical.png\" width=\"24\"><img src=\"Images/dmg_mental.png\" width=\"24\"><br>Может нанести критический урон: Да."; };
   EchoAction_TelekineticPush.pic="action_telekineticpush.png"; 
   EchoAction_TelekineticPush.animation="telekinetic_push.webp";
   EchoAction_TelekineticPush.animtime=1680;
@@ -2329,7 +2349,7 @@ window.kaleidocafe.Characters.Character_Echo = function()
     	//100% atk phy+men damage (0% variance)
         var Crit="";
     	var Dmg = host.atk; 
-    	if (Math.random()*100<=host.critchance) { Dmg=Dmg*(host.critdmg/100); Crit="  <font color=\"#F7DC6F\">﴾Критический удар﴿</font>"}
+    	if (Math.random()*100<=host.critchance) { Dmg=Dmg*(host.critdmg/100); Crit="  <font color=\"#F7DC6F\"><b>﴾﴾﴾ Критический удар ﴿﴿﴿</b></font>"}
     
       	var TotalDamage = new TBS_DmgCon( Dmg/2, 0, 0, Dmg/2,0,0,0);
     
@@ -2344,7 +2364,7 @@ window.kaleidocafe.Characters.Character_Echo = function()
   // ==== Battle Meditation ==============================================
   var EchoAction_BattleMeditation = new TBS_action();
   EchoAction_BattleMeditation.name="Battle Meditation";
-  EchoAction_BattleMeditation.desc="Эхо синхронизирует свой разум с группой повышая точность и увертливость на 100% (от текущей).<br>50<img src=\"Images/mana.png\" width=\"24\">  7<img src=\"Images/cd.png\" width=\"24\">";
+  EchoAction_BattleMeditation.desc= function(host) {return "Эхо синхронизирует свой разум с группой повышая <font color=\"cyan\"><b>точность</b></font> и <font color=\"cyan\"><b>увертливость</b></font> на <font color=\"yellow\"><b>100%</b></font> (от текущей).<br>50<img src=\"Images/mana.png\" width=\"24\">  7<img src=\"Images/cd.png\" width=\"24\">"; };
   EchoAction_BattleMeditation.pic="action_battlemeditation.png"; 
   EchoAction_BattleMeditation.animation="battlemeditation.webp";
   EchoAction_BattleMeditation.animtime=3160;
@@ -2474,7 +2494,7 @@ window.kaleidocafe.Characters.Character_Daisa7 = function()
   // ==== Basic Attack (Energy Blast) ==================
   var DaisaAction_EnergyBlast = new TBS_action();
   DaisaAction_EnergyBlast.name="Energy blast";
-  DaisaAction_EnergyBlast.desc="Базовый энергетический выстрел Дайсы-7.<br>Урон: 100% силы атаки (<img src=\"Images/dmg_energy.png\" width=\"24\">) (разброс: ±30%)<br>Может нанести критический урон: Да.";
+  DaisaAction_EnergyBlast.desc= function(host) {return "Базовый энергетический выстрел Дайсы-7.<br>Урон: 100% силы атаки (<img src=\"Images/dmg_energy.png\" width=\"24\">) (разброс: ±30%)<br>Может нанести критический урон: Да."; };
   DaisaAction_EnergyBlast.pic="action_energyblast.png"; 
   DaisaAction_EnergyBlast.animation="energyblast.webp";
   DaisaAction_EnergyBlast.animtime=1460;
@@ -2546,7 +2566,7 @@ window.kaleidocafe.Characters.Character_Herald = function()
   // ==== Basic Attack (Crimson Orb) ==================
   var HeraldAction_CrimsonOrb = new TBS_action();
   HeraldAction_CrimsonOrb.name="Crimson Orb";
-  HeraldAction_CrimsonOrb.desc="Базовый прием Алой Вестницы.<br>Урон: 100% силы атаки (<img src=\"Images/dmg_astral.png\" width=\"24\">) (разброс: ±50%)<br>Может нанести критический урон: Да.";
+  HeraldAction_CrimsonOrb.desc= function(host) {return "Базовый прием Алой Вестницы.<br>Урон: 100% силы атаки (<img src=\"Images/dmg_astral.png\" width=\"24\">) (разброс: ±50%)<br>Может нанести критический урон: Да."; };
   HeraldAction_CrimsonOrb.pic=""; 
   HeraldAction_CrimsonOrb.animation="crimsonorb.webp";
   HeraldAction_CrimsonOrb.animtime=980;
