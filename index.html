@@ -153,6 +153,11 @@ body p.ran
   color:#DB911F; 
   text-shadow:0 0 1em black, 0 0 1em black ;
 }
+body p.daisa
+{ 
+  color:#AB1E36; 
+  text-shadow:0 0 1em black, 0 0 1em black ;
+}
 
 
 /*  MainMenu style   */
@@ -264,20 +269,13 @@ body.battle #ui-bar-toggle {
 }
 
 /*Map*/
-table.map {
-    width: 100%;
-}
-table.map td {
-    width: 128px;
-    text-align: center;
-}
 img.mapcell {
     width: 128px;
-    height: 72px;
+    height: 64px;
 }
 img.mapcell:hover {
     width: 128px;
-    height: 72px;
+    height: 64px;
   	box-shadow: 0px 0px 4px 4px #96D4D4;
 }
 
@@ -405,8 +403,8 @@ div.battlelog img{
   visibility: visible;
   display: block;
   position: absolute;
-  left:-40px;
-  top:80px;
+  left:-70px;
+  top:84px;
 }
 
 
@@ -1121,26 +1119,27 @@ window.InitMap_Ruins = function()
 {
   state.active.variables.Map_Ruins = [];
   
-  state.active.variables.Map_Ruins.push(new MAP_Cell("Хаб","ruins_hub.png","Ruins_Base",false,0,1));
+  state.active.variables.Map_Ruins.push(new MAP_Cell("Хаб","ruins_hub.png","Ruins_Base",false,0,3));
   
   
-  state.active.variables.Map_Ruins.push(new MAP_Cell("Черные Врата","ruins_blackgate.png","Ruins_BlackGate",false,1,1));
+  state.active.variables.Map_Ruins.push(new MAP_Cell("Черные Врата","ruins_blackgate.png","Ruins_BlackGate",false,1,3));
   
-  state.active.variables.Map_Ruins.push(new MAP_Cell("Корридор 1","ruins_hallway1.png","Ruins_Hallway1",false,2,0));
-  state.active.variables.Map_Ruins.push(new MAP_Cell("Темпоральная дверь Обители","ruins_cradledoor.png","Ruins_CradleDoor",false,2,1));
-  state.active.variables.Map_Ruins.push(new MAP_Cell("Корридор 2","ruins_hallway2.png","Ruins_Hallway2",false,2,2));
+  //state.active.variables.Map_Ruins.push(new MAP_Cell("Корридор 1","ruins_hallway1.png","Ruins_Hallway1",false,2,0));
+  state.active.variables.Map_Ruins.push(new MAP_Cell("Темпоральная дверь Обители","ruins_cradledoor.png","Ruins_CradleDoor",false,2,3));
+  //state.active.variables.Map_Ruins.push(new MAP_Cell("Корридор 2","ruins_hallway2.png","Ruins_Hallway2",false,2,2));
   
-  state.active.variables.Map_Ruins.push(new MAP_Cell("Темпоральная дверь Ночи","ruins_nightdoor.png","Ruins_NightDoor",false,3,0));
-  state.active.variables.Map_Ruins.push(new MAP_Cell("Перекресток","ruins_crosswalk.png","Ruins_CrossWalk",false,3,1));
-  state.active.variables.Map_Ruins.push(new MAP_Cell("Темпоральная дверь Света","ruins_lightdoor.png","Ruins_LightDoor",false,3,2));
+  state.active.variables.Map_Ruins.push(new MAP_Cell("Темпоральная дверь Ночи","ruins_nightdoor.png","Ruins_NightDoor",false,2,2));
+  state.active.variables.Map_Ruins.push(new MAP_Cell("Темпоральная дверь Света","ruins_lightdoor.png","Ruins_LightDoor",false,2,4));
   
-  state.active.variables.Map_Ruins.push(new MAP_Cell("Ритуальный зал","ruins_ritualroom.png","Ruins_RitualRoom",true,4,1));
+  state.active.variables.Map_Ruins.push(new MAP_Cell("Перекресток","ruins_crosswalk.png","Ruins_CrossWalk",false,3,3));
   
-  state.active.variables.Map_Ruins.push(new MAP_Cell("Хранилище","ruins_vault.png","Ruins_Vault",true,5,0));
-  state.active.variables.Map_Ruins.push(new MAP_Cell("Темпоральный зал","ruins_transferroom.png","Ruins_TransferRoom",true,5,1));
-  state.active.variables.Map_Ruins.push(new MAP_Cell("Темпоральная платформа","ruins_temporaltrap.png","Ruins_TemporalTrap",true,5,2));
+  state.active.variables.Map_Ruins.push(new MAP_Cell("Ритуальный зал","ruins_ritualroom.png","Ruins_RitualRoom",true,4,3));
   
-  state.active.variables.Map_Ruins.push(new MAP_Cell("Обитель","ruins_cradle.png","Ruins_Cradle",true,6,1));
+  state.active.variables.Map_Ruins.push(new MAP_Cell("Хранилище","ruins_vault.png","Ruins_Vault",true,5,2));
+  state.active.variables.Map_Ruins.push(new MAP_Cell("Темпоральный зал","ruins_transferroom.png","Ruins_TransferRoom",true,5,3));
+  state.active.variables.Map_Ruins.push(new MAP_Cell("Темпоральная платформа","ruins_temporaltrap.png","Ruins_TemporalTrap",true,5,4));
+  
+  state.active.variables.Map_Ruins.push(new MAP_Cell("Обитель","ruins_cradle.png","Ruins_Cradle",true,6,3));
   
 };
 // ---- Survey Map Cell
@@ -1209,15 +1208,15 @@ window.wikifyAllyPanel = function()
 	  	if (item.joined==true && item.is_enemy==false)
  	 	{
           
-          var health_percent=window.helper.minmaxpercent(Math.floor((item.health_cur/item.health_max)*100));
-          var mana_percent=window.helper.minmaxpercent(Math.floor((item.mana_cur/item.mana_max)*100));
-          var shield_percent=window.helper.minmaxpercent(Math.floor((item.shield/item.health_max)*100));          
+          let health_percent=window.helper.minmaxpercent(Math.floor((item.health_cur/item.health_max)*100));
+          let mana_percent=window.helper.minmaxpercent(Math.floor((item.mana_cur/item.mana_max)*100));
+          let shield_percent=window.helper.minmaxpercent(Math.floor((item.shield/item.health_max)*100));          
  	   		          
           wikified_allies=wikified_allies+'<tr><td rowspan="3"><img id="char_'+index+'" class="ally" style="background-image: url(Images/'+item.pic +'.png)" src="Images/transparent.png" onclick="window.kaleidocafe.useAction('+index+')" alt=""></td><td>'+item.name+'</td></tr><tr><td><span class="spell_tooltip"><span class="bar_back" style="border-image:   linear-gradient(to right, white '+shield_percent+'%, #444 '+shield_percent+'%, #444 100%) 2;"><span class="hp_bar" style="width:'+health_percent+'%"><span class="bartext">'+item.health_cur+' / '+item.health_max+'</span></span><span class="mp_bar" style="width:'+mana_percent+'%"><span class="bartext">'+item.mana_cur+' / '+item.mana_max+'</span></span></span><span class="spell_tooltiptext">HP: '+item.health_cur+' / '+item.health_max+'<br>MP: '+item.mana_cur+' / '+item.mana_max+'<br>SH: '+item.shield+'</span></span></td></tr><tr><td>';
           
         
           
-          for (var sb=0;sb<item.statuses.length;sb++)
+          for (let sb=0;sb<item.statuses.length;sb++)
           {
             if (item.statuses[sb].visible)
             {
@@ -1248,8 +1247,8 @@ window.wikifyEnemyPanel = function()
 	  	if (item.joined==true && item.is_enemy==true)
  	 	{
           
-          var health_percent=Math.floor((item.health_cur/item.health_max)*100);
-          var mana_percent=Math.floor((item.mana_cur/item.mana_max)*100);
+          let health_percent=Math.floor((item.health_cur/item.health_max)*100);
+          let mana_percent=Math.floor((item.mana_cur/item.mana_max)*100);
           
           if (item.mana_max == 0) { mana_percent = 0; }
           
@@ -1257,7 +1256,7 @@ window.wikifyEnemyPanel = function()
  	   		
           	wikified_enemies = wikified_enemies + '<td><tr><td><img id="char_'+index+'" class="'+item.pic+'" onclick="window.kaleidocafe.useAction('+index+')" src="Images//transparent.png" alt=""></td></tr><tr><td>'+item.name+'</td></tr><tr><td><span class="spell_tooltip"><span class="bar_back"><span class="hp_bar" style="width:'+health_percent+'%"><span class="bartext">'+item.health_cur+' / '+item.health_max+'</span></span><span class="mp_bar" style="width:'+mana_percent+'%"><span class="bartext">'+item.mana_cur+' / '+item.mana_max+'</span></span></span><span class="spell_tooltiptext">HP: '+item.health_cur+' / '+item.health_max+'<br>MP: '+item.mana_cur+' / '+item.mana_max+'<br>SH: '+item.shield+'</span></span></td></tr><tr><td>';
           
-          	for (var sb=0;sb<item.statuses.length;sb++)
+          	for (let sb=0;sb<item.statuses.length;sb++)
           	{
             	if (item.statuses[sb].visible)
             	{
@@ -1322,39 +1321,27 @@ macros.wikifyMap_Ruins = {
     handler: function(place, macroName, params, parser) {
   
       
-      let WF = '<table class="map"><tbody>';
+		let WF = '<div style="width:100%; height:600px; position:relative;">';
       
-      for (let y=0;y<3;y++) //Y coordinate
-      {
-        WF += '<tr>';
-        for (let x=0;x<7;x++) //X coordinate
-      	{
-          WF += '<td>';
-        	let smc = state.active.variables.Map_Ruins.findIndex(sc => sc.pos_X == x && sc.pos_Y == y);
-          
-                    
-          	if (smc != -1) 
-            {  
-              if (state.active.variables.Map_Ruins[smc].locked == true)
+		function MapCellAdd(item,index,arr) 
+		{
+			if (item.locked == true)
               {
-                  WF += '<span class="map_tooltip"><img src="Images/map_unknown.png" class="mapcell" /><span class="map_tooltiptext"><b>Неизвестная локация</b></span></span>';
+                  WF += '<span class="map_tooltip" style="left:'+(item.pos_X*136)+'px; top:'+item.pos_Y*80+'px;position:absolute;"><img src="Images/map_unknown.png" class="mapcell" /><span class="map_tooltiptext"><b>Неизвестная локация</b></span></span>';
               }
               else
               {
-                  WF += '<span class="map_tooltip"><img src="Images/' + state.active.variables.Map_Ruins[smc].pic + '" class="mapcell" onclick="window.MapTravel(\'' + state.active.variables.Map_Ruins[smc].passage + '\')"/><span class="map_tooltiptext"><b>' + state.active.variables.Map_Ruins[smc].name + '</b></span></span>';
+                  WF += '<span class="map_tooltip" style="left:'+(item.pos_X*136)+'px; top:'+item.pos_Y*80+'px;position:absolute;"><img src="Images/' + item.pic + '" class="mapcell" onclick="window.MapTravel(\'' + item.passage + '\')"/><span class="map_tooltiptext"><b>' + item.name + '</b></span></span>';
               }
-            }
-          	else
-            {
-              WF+= '<img src="Images/transparent.png" width="128" height="64" />';
-            }
-          WF += '</td>';
-      	}
-        WF += '</tr>';
-      }
-      WF += '</tbody></table>';
+		}
+		
+		state.active.variables.Map_Ruins.forEach(MapCellAdd);
+		
+		WF += '</div>';
+	  
+		
       
-      new Wikifier(place,WF);
+		new Wikifier(place,WF);
     }
 };
 
@@ -1942,7 +1929,7 @@ window.kaleidocafe.Characters.Character_Tray = function()
   // ==== Heal ================================================
   var TrayAction_Heal = new TBS_action();
   TrayAction_Heal.name="Cura";
-  TrayAction_Heal.desc= function(host) {return "Трей восстанавливает <font color=\"yellow\"><b>10%</b></font> здоровья себе или союзнику.<br>15<img src=\"Images/mana.png\" width=\"24\">"; };
+  TrayAction_Heal.desc= function(host) {return "Трей восстанавливает <font color=\"yellow\"><b>10% + "+Math.floor(host.atk)+"</b></font> здоровья себе или союзнику.<br>15<img src=\"Images/mana.png\" width=\"24\">"; };
   TrayAction_Heal.pic="action_heal1.png"; 
   TrayAction_Heal.animation="heal1.webp";
   TrayAction_Heal.animtime=2080;
@@ -1957,10 +1944,10 @@ window.kaleidocafe.Characters.Character_Tray = function()
   TrayAction_Heal.formula = function(host,target)  // action specific events
   	{
     
-    	let Heal_power = Math.floor(target.health_max*0.1);
+    	let Heal_power = Math.floor(target.health_max*0.1) + Math.floor(host.atk);
     	target.health_cur = Math.min(target.health_max, Heal_power + target.health_cur);
     
-     	window.battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ TrayAction_Heal.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font> и восстанавливает ' + Heal_power+' здоровья');
+     	window.battleLog('<font color="cyan"><b>' + host.name + '</b></font> использует <font color="yellow"><b>'+ TrayAction_Heal.name + '</b></font> на <font text-color="grey"><b>' + target.name + '</b></font> и восстанавливает ' + Heal_power + ' здоровья');
     };
   Tray.actions.push(TrayAction_Heal);
   // ============================================================
@@ -3210,7 +3197,7 @@ Evasion: 10
 &lt;&lt;if $daisa_battle_done is false&gt;&gt;\
 &lt;&lt;audio &quot;ruins_theme&quot; stop&gt;&gt;\
 &lt;&lt;audio &quot;unprecendented&quot; loop play&gt;&gt;\
-&lt;&lt;script&gt;&gt;window.kaleidocafe.actionSound(&quot;collapse.ogg&quot;);&lt;&lt;/script&gt;&gt;
+&lt;&lt;script&gt;&gt;window.kaleidocafe.actionSound(&quot;collapse.mp3&quot;);&lt;&lt;/script&gt;&gt;
 Войдя в помещение вы слышите отдаленный гул, что-то приближается!
 Внезапно как будто бы из ниоткуда возникает двухметровый робот. Он странно двигается, с ним явно что-то не так. \
 &lt;&lt;timed 2s&gt;&gt;
