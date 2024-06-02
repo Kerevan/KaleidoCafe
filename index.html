@@ -98,7 +98,16 @@ var LZString={_keyStr:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234
 		<div id="init-lacking"><p>Browser lacks capabilities required to play.</p><p>Upgrade or switch to another browser.</p></div>
 		<div id="init-loading"><div>Loading&hellip;</div></div>
 	</div>
-	<tw-storydata name="Kaleidoscope-Cafe-E2_C1" startnode="1" creator="Twine" creator-version="2.8.1" format="SugarCube" format-version="2.36.1" ifid="62AE25A9-9018-4972-BE9E-A36079F97BF4" options="" tags="" zoom="0.6" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">body p.holy 
+	<tw-storydata name="Kaleidoscope-Cafe-E2_C1" startnode="1" creator="Twine" creator-version="2.8.1" format="SugarCube" format-version="2.36.1" ifid="62AE25A9-9018-4972-BE9E-A36079F97BF4" options="" tags="" zoom="0.6" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">img.continue
+{
+  content: url(Images/continue.webp);
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 512px;
+}
+
+body p.holy 
 { 
   color:lightskyblue; 
   text-shadow:0 0 1em black, 0 0 1em black;
@@ -279,7 +288,14 @@ img.mapcell:hover {
   	box-shadow: 0px 0px 4px 4px #96D4D4;
 }
 
+p {
+  animation: fadeIn 2s;
+}
 
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
 
 
 /* battle log */
@@ -656,6 +672,19 @@ span.bar_back {
 }
 
 
+/*! <<replacelink>> macro set for SugarCube 2.x */
+.revision-span-in {
+	opacity: 0;
+}
+.revision-span:not(.revision-span-out) {
+	-webkit-transition: 1s;
+	transition: 1s;
+}
+.revision-span-out {
+	position: absolute;
+	opacity: 0;
+}
+
 
 
 
@@ -674,6 +703,17 @@ span.bar_back {
 
 
 </style><script role="script" id="twine-user-script" type="text/twine-javascript">Config.history.controls = false;
+
+/*! <<replacelink>> macro set for SugarCube 2.x */
+!function(){"use strict";function showVer(n,notrans){n&&(n.innerHTML="",new Wikifier(n,n.tweecode),n.setAttribute("data-enabled","true"),n.style.display="inline",n.classList.remove("revision-span-out"),notrans||(n.classList.add("revision-span-in"),n.timeout&&clearTimeout(n.timeout),n.timeout=setTimeout(function(){n.classList.remove("revision-span-in"),n=null},20)))}function hideVer(n,notrans){n&&(n.setAttribute("data-enabled","false"),n.classList.remove("revision-span-in"),n.timeout&&clearTimeout(n.timeout),notrans?(n.style.display="none",n.innerHTML="",n=null):(n.classList.add("revision-span-out"),n.timeout=setTimeout(function(){"false"===n.getAttribute("data-enabled")&&(n.classList.remove("revision-span-out"),n.style.display="none",n.innerHTML=""),n=null},1e3)))}function tagcontents(b,starttags,desttags,endtags,k){function tagfound(i,e,endtag){for(var j=0;j<e.length;j++)if(a.indexOf("<<"+e[j]+(endtag?">>":""),i)===i)return e[j]}for(var tg,l=0,c="",a=b.source.slice(k),i=0;i<a.length;i++){if(tg=tagfound(i,starttags))l++;else{if((tg=tagfound(i,desttags,!0))&&0===l)return b.nextMatch=k+i+tg.length+4,[c,tg];if((tg=tagfound(i,endtags,!0))&&(l--,l<0))return null}c+=a.charAt(i)}return null}function revisionSpanHandler(g,e,f,b){function mkspan(vtype){return h=insertElement(m,"span",null,"revision-span "+vtype),h.setAttribute("data-enabled",!1),h.style.display="none",h.tweecode="",h}var becomes,c,cn,m,h,vsn,k=b.source.indexOf(">>",b.matchStart)+2,vsns=[],vtype=e,flen=f.length;if(this.shorthand&&flen)for(;f.length>0;)vsns.push([f.shift(),"insert"===this.flavour?"gains":"becomes"]);else("insert"===this.flavour||"continue"===this.flavour&&"time"===this.trigger)&&vsns.push(["","becomes"]);if("continue"===this.flavour&&flen)b.nextMatch=k+b.source.slice(k).length,vsns.push([b.source.slice(k),vtype]);else{if(becomes=["becomes","gains"],c=tagcontents(b,begintags,becomes.concat(endtags),endtags,k),c&&endtags.indexOf(c[1])===-1){for(;c;)vsns.push(c),c=tagcontents(b,begintags,becomes,endtags,b.nextMatch);c=tagcontents(b,begintags,["/"+e,"end"+e],endtags,b.nextMatch)}if(!c)return void throwError(g,"<<"+e+">>: cannot find a matching close tag");vsns.push(c),"continue"===this.flavour&&(k=b.nextMatch,b.nextMatch=k+b.source.slice(k).length,vsns.push([b.source.slice(k),""]))}for("remove"===this.flavour&&vsns.push(["","becomes"]),cn=0,m=insertElement(g,"span",null,e),m.setAttribute("data-flavour",this.flavour),h=mkspan("initial"),vsn=vsns.shift(),h.tweecode=vsn[0],showVer(h,!0);vsns.length>0;)vsn&&(vtype=vsn[1]),vsn=vsns.shift(),h=mkspan(vtype),h.tweecode=vsn[0];"function"==typeof this.setup&&this.setup(m,g,e,f)}function revisionSetup(m,g,e,f){m.className+=" "+f[0].replace(" ","_")}function keySetup(m,g,e,f){f[0];m.setEventListener("keydown",function l(e){var done=!revise("revise",m);done&&m.removeEventListener("keydown",l)})}function timeSetup(m,g,e,f){function cssTimeUnit(s){if("string"==typeof s){if("ms"===s.slice(-2).toLowerCase())return Number(s.slice(0,-2))||0;if("s"===s.slice(-1).toLowerCase())return 1e3*Number(s.slice(0,-1))||0}return throwError(g,"<<"+e+'>>: "'+s+'" is not a valid CSS time unit'),0}var tm=cssTimeUnit(f[0]),s=passage();setTimeout(function timefn(){if(passage()===s){var done=!revise("revise",m);done||setTimeout(timefn,tm)}},tm)}function hoverSetup(m){var fn,noMouseEnter=null!==document.head.onmouseenter,m1=m.children[0],m2=m.children[1],gains=m2.className.indexOf("gains")>-1;m1&&m2&&(m1.onmouseenter=function(e){for(var efp=document.elementFromPoint(e.clientX,e.clientY);efp&&efp!==this;)efp=efp.parentNode;efp&&"false"!==this.getAttribute("data-enabled")&&revise("revise",this.parentNode)},m2.onmouseleave=function(e){for(var efp=document.elementFromPoint(e.clientX,e.clientY);efp&&efp!==this;)efp=efp.parentNode;efp||"false"!==this.getAttribute("data-enabled")&&revise("revert",this.parentNode)},gains&&(m1.onmouseleave=m2.onmouseleave),noMouseEnter&&(fn=function(n){return function(e){event.relatedTarget&&(event.relatedTarget===this||this.compareDocumentPosition(event.relatedTarget)&Node.DOCUMENT_POSITION_CONTAINED_BY)||this[n]()}},m1.onmouseover=fn("onmouseenter"),m2.onmouseout=fn("onmouseleave"),gains&&(m1.onmouseout=m2.onmouseout)),m=null)}function mouseSetup(m){var evt=null===document.head.onmouseenter?"onmouseenter":"onmouseover";m[evt]=function(){var done=!revise("revise",this);done&&(this[evt]=null)},m=null}function linkSetup(m,g,e,f){var l=document.createElement("a"),p=m.parentNode;l.className="link-internal replaceLink",p.insertBefore(l,m),l.insertBefore(m,null),jQuery(l).ariaClick(function(){var done=!1;m&&m.parentNode===this&&(done=!revise("revise",m),scrollWindowTo(m)),done&&(this.parentNode.insertBefore(m,this),this.parentNode.removeChild(this))}),l=null}function visitedSetup(m,g,e,f){var done,sav=State.variables,os="once seen",d=m.firstChild&&("insert"===this.flavour?m.firstChild.nextSibling:m.firstChild).tweecode;if(sav[os]=sav[os]||{},d&&!sav[os].hasOwnProperty(d))sav[os][d]=1;else{for(var i=sav[os][d];i>0&&!done;i--)done=!revise("revise",m,!0);sav[os].hasOwnProperty(d)&&(sav[os][d]+=1)}}function insideDepartingSpan(elem){for(var r=elem.parentNode;!r.classList.contains("passage");){if(r.classList.contains("revision-span-out"))return!0;r=r.parentNode}}function reviseAll(rt,rname){for(var rall=document.querySelectorAll(".passage [data-flavour]."+rname),ret=!1,i=0;i<rall.length;i++)insideDepartingSpan(rall[i])||(ret=revise(rt,rall[i])||ret);return ret}function revise(rt,r,notrans){function doToGainerSpans(n,fn){for(var k=n-1;k>=0&&rc[k+1].classList.contains("gains");k--)fn(rc[k],notrans)}for(var ind2,curr,next,ind=-1,rev="revert"===rt,rnd=rt.indexOf("random")>-1,fl=r.getAttribute("data-flavour"),rc=r.childNodes,cyc="cycle"===fl,rcl=rc.length-1,k=0;k<=rcl;k++)"true"===rc[k].getAttribute("data-enabled")&&(ind=k);rev&&(ind-=1),curr=ind>=0?rc[ind]:cyc?rc[rcl]:null,ind2=ind,rnd&&(ind2=(ind+Math.floor(Math.random()*rcl))%rcl),next=ind2<rcl?rc[ind2+1]:cyc?rc[0]:null;var docurr=rev?showVer:hideVer,donext=rev?hideVer:showVer,currfn=function(){next&&next.classList.contains("gains")&&!rnd||(docurr(curr,notrans),doToGainerSpans(ind,docurr,notrans))},nextfn=function(){donext(next,notrans),rnd&&doToGainerSpans(ind2+1,donext,notrans)};return rev?(nextfn(),currfn()):(currfn(),nextfn()),!!cyc||(rev?ind>0:ind2<rcl-1)}if("undefined"==typeof version||"undefined"==typeof version.title||"SugarCube"!==version.title||"undefined"==typeof version.major||version.major<2)throw new Error("<<replacelink>> macro set requires SugarCube 2.0.0 or greater, aborting load");version.extensions.replacelinkMacroSet={major:1,minor:1,revision:7};var begintags=[],endtags=[];[{name:"insertlink",flavour:"insert",trigger:"link",setup:linkSetup},{name:"timedinsert",flavour:"insert",trigger:"time",setup:timeSetup},{name:"insertion",flavour:"insert",trigger:"revisemacro",setup:revisionSetup},{name:"later",flavour:"insert",trigger:"visited",setup:visitedSetup},{name:"keyinsert",flavour:"insert",trigger:"key",setup:keySetup},{name:"replacelink",flavour:"replace",trigger:"link",setup:linkSetup},{name:"timedreplace",flavour:"replace",trigger:"time",setup:timeSetup},{name:"mousereplace",flavour:"replace",trigger:"mouse",setup:mouseSetup},{name:"hoverreplace",flavour:"replace",trigger:"hover",setup:hoverSetup},{name:"revision",flavour:"replace",trigger:"revisemacro",setup:revisionSetup},{name:"keyreplace",flavour:"replace",trigger:"key",setup:keySetup},{name:"timedremove",flavour:"remove",trigger:"time",setup:timeSetup},{name:"mouseremove",flavour:"remove",trigger:"mouse",setup:mouseSetup},{name:"hoverremove",flavour:"remove",trigger:"hover",setup:hoverSetup},{name:"removal",flavour:"remove",trigger:"revisemacro",setup:revisionSetup},{name:"once",flavour:"remove",trigger:"visited",setup:visitedSetup},{name:"keyremove",flavour:"remove",trigger:"key",setup:keySetup},{name:"continuelink",flavour:"continue",trigger:"link",setup:linkSetup},{name:"timedcontinue",flavour:"continue",trigger:"time",setup:timeSetup},{name:"mousecontinue",flavour:"continue",trigger:"mouse",setup:mouseSetup},{name:"keycontinue",flavour:"continue",trigger:"key",setup:keySetup},{name:"cycle",flavour:"cycle",trigger:"revisemacro",setup:revisionSetup},{name:"mousecycle",flavour:"cycle",trigger:"mouse",setup:mouseSetup},{name:"timedcycle",flavour:"cycle",trigger:"time",setup:timeSetup},{name:"keycycle",flavour:"replace",trigger:"key",setup:keySetup}].forEach(function(e){e.handler=revisionSpanHandler,e.shorthand=["link","mouse","hover"].indexOf(e.trigger)>-1,macros[e.name]=e,Macro.tags.register(e.name),begintags.push(e.name),endtags.push("/"+e.name,"end"+e.name)}),macros.revertlink=macros.reviselink=macros.randomiselink=macros.randomizelink={handler:function(a,b,c){function disableLink(l){l.style.display="none"}function enableLink(l){l.style.display="inline"}function updateLink(l){if(l.className.indexOf("random")>-1)return void enableLink(l);for(var cannext,canprev,r,fl,rall=document.querySelectorAll(".passage [data-flavour]."+rname),i=0;i<rall.length;i++)r=rall[i],fl=r.getAttribute("data-flavour"),insideDepartingSpan(r)||("cycle"===fl?cannext=canprev=!0:("false"===r.firstChild.getAttribute("data-enabled")&&(canprev=!0),"false"===r.lastChild.getAttribute("data-enabled")&&(cannext=!0)));var can=l.classList.contains("revert")?canprev:cannext;(can?enableLink:disableLink)(l)}function toggleText(w){w.classList.toggle(rl+"Enabled"),w.classList.toggle(rl+"Disabled"),w.style.display="none"===w.style.display?"inline":"none"}if(c.length<2)return void throwError(a,"<<"+b+">>: insufficient arguments (requires at least 2)");var l,rname,actName=b.slice(0,-4),rl="reviseLink",v="",end=!1,out=!1;switch(rname=c.shift().replace(" ","_"),l=insertElement(a,"a"),l.className="link-internal "+rl+" "+rl+"_"+rname+" "+actName,c.length>1&&"$"===c[0][0]&&(v=c[0].slice(1),c.shift()),c[c.length-1]){case"end":end=!0,c.pop();break;case"out":out=!0,c.pop()}for(var h=State.variables,i=0;i<c.length;i++){var on=i===Math.max(c.indexOf(h[v]),0),d=insertElement(null,"span",null,rl+(on?"En":"Dis")+"abled");on?(h[v]=c[i],l.setAttribute("data-cycle",i)):d.style.display="none",insertText(d,c[i]),l.appendChild(d)}jQuery(l).ariaClick(function(){reviseAll(actName,rname);var lall,t=this.childNodes,u=this.getAttribute("data-cycle")-0,m=t.length;if((end||out)&&u>=m-(end?2:1)){if(!end)return void this.parentNode.removeChild(this);var n=this.removeChild(t[u+1]||t[u]);n.className=rl+"End",n.style.display="inline",this.parentNode.replaceChild(n,this)}else toggleText(t[u]),u=(u+1)%m,v&&(h[v]=c[u]),toggleText(t[u]),this.setAttribute("data-cycle",u);lall=document.getElementsByClassName(rl+"_"+rname);for(var i=0;i<lall.length;i++)updateLink(lall[i])}),disableLink(l),setTimeout(function(l){return function(){updateLink(l)}}(l),1),l=null}},macros.mouserevise=macros.hoverrevise={handler:function(a,b,c,d){var endtags=["/"+b,"end"+b],evt=null===window.onmouseenter?"onmouseenter":"onmouseover",t=tagcontents(d,[b],endtags,endtags,d.source.indexOf(">>",d.matchStart)+2);if(t){var rname=c[0].replace(" ","_"),h=insertElement(a,"span",null,"hoverrevise hoverrevise_"+rname),f=function(){var done=!reviseAll("revise",rname);"hoverrevise"!=b&&done&&(this[evt]=null)};new Wikifier(h,t[0]),"hoverrevise"===b?(h.onmouseover=f,h.onmouseout=function(){reviseAll("revert",rname)}):h[evt]=f,h=null}}},Macro.tags.register("mouserevise"),Macro.tags.register("hoverrevise"),macros.instantrevise={handler:function(a,b,c,d){reviseAll("revise",c[0].replace(" ","_"))}}}();
+
+$('#passages').bind("mousedown", function(event){
+	$(document).find('a.link-internal.replaceLink').trigger("click");
+})
+
+
+
+//========================================================================================================
 
 // Begin Inventory Macros
 // Original macros by F2Andy: http://strugglingwithtwine.blogspot.ca/2014/03/handling-inventory.html
@@ -1103,12 +1143,12 @@ window.changeTeam = function(char_id)
   
   if (is_joining == true)
   {
-    if (TeamSize<4) {state.active.variables.TBS_chars[char_id].joined=true; document.getElementById('teamchar'+char_id).className = "teamcharselected";} else {window.kaleidocafe.actionSound("error.mp3"); }
+    if (TeamSize<4) {state.active.variables.TBS_chars[char_id].joined=true; document.getElementById('teamchar'+char_id).className = "teamcharselected"; window.kaleidocafe.actionSound("select.mp3"); } else {window.kaleidocafe.actionSound("error.mp3"); }
   
   }
   else
   {
-    state.active.variables.TBS_chars[char_id].joined=false; document.getElementById('teamchar'+char_id).className = "teamchar";
+    state.active.variables.TBS_chars[char_id].joined=false; document.getElementById('teamchar'+char_id).className = "teamchar"; window.kaleidocafe.actionSound("cancel.mp3"); 
   }
   
 };
@@ -2719,23 +2759,24 @@ window.kaleidocafe.activateEnemyGroup = function(group)
 
 [[Тестировать...|Тест]]
 
-&lt;/p&gt;</tw-passagedata><tw-passagedata pid="2" name="Начало" tags="cafe" position="450,100" size="100,100">Очередной спокойный день в кафе &quot;Безмятежность&quot;. Со времени атаки на Новый Амфер прошло несколько дней, однако Магической Ассоциации ничего не стоило восстановить весь ущерб в кратчайшие сроки. 
+&lt;/p&gt;</tw-passagedata><tw-passagedata pid="2" name="Начало" tags="cafe" position="450,100" size="100,100">&lt;&lt;audio &quot;cafe_theme&quot; loop play&gt;&gt;\
+Очередной спокойный день в кафе &quot;Безмятежность&quot;. Со времени атаки на Новый Амфер прошло несколько дней, однако Магической Ассоциации ничего не стоило восстановить весь ущерб в кратчайшие сроки. 
 
 Трей и Альбертина отдыхали отработав свою смену. Холи принесла им две чашки ароматного чая и немного пирожных сделанных лично хозяйкой кафе - Илисиэль.
 Ее кондитерские изделия всегда были божественны на вкус, интересно что за магию она использовала для их создания. Однако Трей не припоминает случая когда видел бы как она готовит или использует магию вообще. Альбертина так же отметила что никаких астральных возмущений от нее она никогда не ощущала.
-\
+&lt;&lt;continuelink &quot;&lt;img class=&#39;continue&#39; /&gt;&quot;&gt;&gt;\
 &lt;&lt;charDialog &quot;holy&quot; &quot;holy_normal.png&quot; &quot;Холи&quot; &quot;Не желаете что-нибудь еще?&quot;&gt;&gt;
-\
+&lt;&lt;continuelink &quot;&lt;img class=&#39;continue&#39; /&gt;&quot;&gt;&gt;\
 Трей покачал головой отвлекаясь от своих мыслей, Альбертина сказала что этого хватит.
-\
+&lt;&lt;continuelink &quot;&lt;img class=&#39;continue&#39; /&gt;&quot;&gt;&gt;\
 &lt;&lt;charDialog &quot;holy&quot; &quot;holy_smile.png&quot; &quot;Холи&quot; &quot;Сегодня Госпожа принимала посыльного, наверняка нас ждет новое задание. &quot;&gt;&gt;
-\
+&lt;&lt;continuelink &quot;&lt;img class=&#39;continue&#39; /&gt;&quot;&gt;&gt;\
 Лицо Холи засияло от предвкушения. Трей явно не разделял ее энтузиазма, если это так, то ему снова придется планировать всю дейтельность группы, хорошо хоть удалось отдохнуть несколько дней.
 
 [[Распросить Холи|Holy_question_cafe]]
 [[Закончить перерыв|Cafe_highroom1]]
 
-&lt;&lt;audio &quot;cafe_theme&quot; loop play&gt;&gt;</tw-passagedata><tw-passagedata pid="3" name="StoryCaption" tags="" position="0,300" size="200,100">&lt;span id=&quot;AllyPanel&quot;&gt;&lt;/span&gt;
+</tw-passagedata><tw-passagedata pid="3" name="StoryCaption" tags="" position="0,300" size="200,100">&lt;span id=&quot;AllyPanel&quot;&gt;&lt;/span&gt;
 
 </tw-passagedata><tw-passagedata pid="4" name="StoryMenu" tags="" position="0,421" size="100,100">[[Инвентарь|Inventory]] 
 [[Журнал|Journal]]</tw-passagedata><tw-passagedata pid="5" name="StorySubtitle" tags="" position="0,550" size="200,100">//&#39;&#39;$location_name&#39;&#39;//</tw-passagedata><tw-passagedata pid="6" name="StoryInit" tags="" position="0,175" size="100,100">&lt;&lt;initInv&gt;&gt;
@@ -2764,7 +2805,8 @@ window.kaleidocafe.activateEnemyGroup = function(group)
 \
 [[Назад|Holy_question_cafe]]</tw-passagedata><tw-passagedata pid="10" name="Holy_Q1_Join_Cafe" tags="cafe" position="600,475" size="200,100">&lt;&lt;charDialog &quot;holy&quot; &quot;holy_smile.png&quot; &quot;Холи&quot; &quot;Я пробовала множество разных мест перед тем как оказаться здесь, как ни странно Госпожа сама нашла меня и предложила работать в ее Кафе, конечно же не только из-за моих навыков официантки. По началу эта идея показалась мне очень странной, однако она предложила очень хорошие деньги и я не могла упустить такой шанс после всех моих неудачных попыток заполучить хоть какую-то работу.&quot;&gt;&gt;
 \
-[[Назад|Holy_question_cafe]]</tw-passagedata><tw-passagedata pid="11" name="Cafe_highroom1" tags="cafe" position="1000,200" size="200,100">Холи забрала всю использованную посуду со стола и отправилась ее мыть. Трей и Альбертина собрались было приняться за оставшуюся работу как тут прозвенел звоночек. Это означало что всем незанятым сотрудникам необходимо собраться в кабинете начальницы.
+[[Назад|Holy_question_cafe]]</tw-passagedata><tw-passagedata pid="11" name="Cafe_highroom1" tags="cafe" position="1000,200" size="200,100">&lt;&lt;audio &quot;cafe_theme&quot; fadeto 0&gt;&gt;\
+Холи забрала всю использованную посуду со стола и отправилась ее мыть. Трей и Альбертина собрались было приняться за оставшуюся работу как тут прозвенел звоночек. Это означало что всем незанятым сотрудникам необходимо собраться в кабинете начальницы.
 
 Очевидно Холи была права и Илисиэль действительно нашла новое задание для группы.
 
@@ -2772,37 +2814,34 @@ window.kaleidocafe.activateEnemyGroup = function(group)
 
 Трей еще не видел ее такой серьезной, похоже она обдумывала какое-то непростое решение.
 
-[[Далее|Cafe_highroom2]]
-
-
-&lt;&lt;audio &quot;cafe_theme&quot; fadeto 0&gt;&gt;</tw-passagedata><tw-passagedata pid="12" name="Cafe_highroom2" tags="cafe" position="1225,200" size="200,100">&lt;&lt;charDialog &quot;iliciele&quot; &quot;iliciele_serious.png&quot; &quot;Илисиэль&quot; &quot;Итак, у нас есть очередная работа! Я бы даже сказала две. &quot;&gt;&gt;
+[[Далее|Cafe_highroom2]]</tw-passagedata><tw-passagedata pid="12" name="Cafe_highroom2" tags="cafe" position="1225,200" size="200,100">&lt;&lt;audio &quot;cafe_theme&quot; stop&gt;&gt;\
+&lt;&lt;audio &quot;cafe_suspense&quot; loop play&gt;&gt;\
 \
+&lt;&lt;charDialog &quot;iliciele&quot; &quot;iliciele_serious.png&quot; &quot;Илисиэль&quot; &quot;Итак, у нас есть очередная работа! Я бы даже сказала две. &quot;&gt;&gt;
+&lt;&lt;continuelink &quot;&lt;img class=&#39;continue&#39; /&gt;&quot;&gt;&gt;\
 &lt;&lt;charDialog &quot;iliciele&quot; &quot;iliciele_tired.png&quot; &quot;Илисиэль&quot; &quot;Вы разделитесь на две команды, одна из них займется поисками Гуона и Тенебрии. Конечно судя по тому, что Гуон не воспользовался силой Тенебрии он вряд ли планирует что-либо против нас, однако он по прежнему слишком опасен чтобы игнорировать его. &quot;&gt;&gt;
-\
+&lt;&lt;continuelink &quot;&lt;img class=&#39;continue&#39; /&gt;&quot;&gt;&gt;\
 &lt;&lt;charDialog &quot;iliciele&quot; &quot;iliciele_normal.png&quot; &quot;Илисиэль&quot; &quot;Лидером этой команды будет Лизбет, и входить в нее будут: Альбертина, Радж, Рима и Нирта. Остальные займутся куда более деликатным делом. &quot;&gt;&gt;
 \
-[[Далее|Cafe_highroom3]]
-&lt;&lt;audio &quot;cafe_theme&quot; stop&gt;&gt;
-&lt;&lt;audio &quot;cafe_suspense&quot; loop play&gt;&gt;</tw-passagedata><tw-passagedata pid="13" name="Cafe_highroom3" tags="cafe" position="1450,200" size="200,100">&lt;&lt;charDialog &quot;iliciele&quot; &quot;iliciele_normal.png&quot; &quot;Илисиэль&quot; &quot;На этот раз нам выпала возможность помочь ученым Специального отдела 27 Магической Ассоциации...&quot;&gt;&gt;
-\
+[[Далее|Cafe_highroom3]]</tw-passagedata><tw-passagedata pid="13" name="Cafe_highroom3" tags="cafe" position="1450,200" size="200,100">&lt;&lt;charDialog &quot;iliciele&quot; &quot;iliciele_normal.png&quot; &quot;Илисиэль&quot; &quot;На этот раз нам выпала возможность помочь ученым Специального отдела 27 Магической Ассоциации...&quot;&gt;&gt;
+&lt;&lt;continuelink &quot;&lt;img class=&#39;continue&#39; /&gt;&quot;&gt;&gt;\
 &lt;&lt;charDialog &quot;iliciele&quot; &quot;iliciele_pride.png&quot; &quot;Илисиэль&quot; &quot;Правда часть его сотрудников итак временно работает у меня здесь. Дэмиан, Аркен... Думаю будет проще предоставить пояснения вам.&quot;&gt;&gt;
-\
-
+&lt;&lt;continuelink &quot;&lt;img class=&#39;continue&#39; /&gt;&quot;&gt;&gt;\
 Дэмиан и Аркен подошли к столу и Дэмиан щелкнул в руках каким-то пультом. В комнате возникла голограмма колоссального комплекса руин посреди бескрайних песков.
-
+&lt;&lt;continuelink &quot;&lt;img class=&#39;continue&#39; /&gt;&quot;&gt;&gt;\
 &lt;&lt;charDialog &quot;damian&quot; &quot;damian_normal.png&quot; &quot;Дэмиан&quot; &quot;Вы видите перед собой древние руины цивилизации хиса, однако в отличии от храмов что мы находили ранее благодаря Мисе Тайо эти руины в несколько раз больше и являются скорее городом чем храмом. В этих руинах есть действующие &lt;span class=\&quot;tooltip\&quot;&gt;//Черные Врата.//&lt;span class=\&quot;tooltiptext\&quot;&gt;Древние врата созданные Кис&#39;Ами.&lt;/span&gt;&lt;/span&gt; Эти врата отличаются от остальных не только структурой, но и тем фактом что они остались после исчезновения всех остальных. Мы предполагаем что Миса решила недопустить проникновение в Альтиор и уничтожила все методы которыми можно было бы воспользоваться чтобы осуществить это. Так что эти Черные Врата очевидно ведут в иное место или имеют совершенно иное предназначение.&quot;&gt;&gt;
 \
 [[Далее|Cafe_highroom4]]
 </tw-passagedata><tw-passagedata pid="14" name="Holy_Q1_Past" tags="cafe" position="600,600" size="200,100">&lt;&lt;charDialog &quot;holy&quot; &quot;holy_sad.png&quot; &quot;Холи&quot; &quot;Моя история довольно банальна. Я родилась очень далеко отсюда в одной из пограничных колоний Эдена. Я не знала своих родителей, с самого начала я жила в местном детском приюте. Колония специализировалась на неком экзотическом морском промысле, однако заниматься подобным у меня видимо не хватало мозгов и сноровки. Поначалу я подрабатывала в местных тавернах и барах, благо я научилась хорошо готовить. Места были неспокойные, Эдену же не было особого дела до жизни местных пока это не касалось их непосредственно. Служба в их рядах была мечтой многих, как и моей, но я не смогла пройти отбор и была признана недостаточно полезной. Тогда во мне еще не пробудилась сила нейтрализовывать магию вокруг себя, а то вполне могла бы наверное занять свое место в рядах Эдена. Потом я много путешествовала пока меня не нашла Госпожа. Дальше я думаю ты в курсе, вас с Альбертиной она устроила в тот же день.&quot;&gt;&gt;
 \
 [[Назад|Holy_question_cafe]]</tw-passagedata><tw-passagedata pid="15" name="Cafe_highroom4" tags="cafe" position="1675,200" size="200,100">&lt;&lt;charDialog &quot;arken&quot; &quot;arken_normal.png&quot; &quot;Аркен&quot; &quot;В данный момент руинами занимается профессор Расс, он специалист по лингвистике хиса. Конечно в распоряжении Магической Ассоциации есть два представителя этой расы, но лишь доктор Кальсит относится к рабочему сословию и знает письменность и особенности языка. Как это ни странно сословие жриц и жрецов имело куда более узконаправленное назначение личного характера своих господ Кис&#39;Ами. Так что нам не придется вызывать из Цитадели леди Альбу. Мы с Дэмианом уже были на точке, однако так как Культ Темной Богини был нейтрализован мы были переброшены в помощь иным проектам Магической Ассоциации, а позже специальным распоряжением совета переданы в состав группы Илисиэль. Сейчас в руинах находятся четыре сотрудника Магической Ассоциации: технологи Лан и Ран, доктор Кальсит, ассистентка профессора Расса - Либир и ее личный робот - Дайса-7. Насколько мне известно сам профессор Расс срочно отбыл на встречу с руководителем СпецОтдела 27 - госпожой Лаби.&quot;&gt;&gt;
-\
+&lt;&lt;continuelink &quot;&lt;img class=&#39;continue&#39; /&gt;&quot;&gt;&gt;\
 &lt;&lt;charDialog &quot;damian&quot; &quot;damian_serious.png&quot; &quot;Дэмиан&quot; &quot;Наша задача - открыть эти врата и узнать куда они ведут, очевидно первостепенной задачей является всестороннее изучение руин, включая их прошлое с помощью незаменимой силы принцессы Эхо. &quot;&gt;&gt;
 \
 [[Далее|Cafe_highroom5]]</tw-passagedata><tw-passagedata pid="16" name="Cafe_highroom5" tags="cafe" position="1900,200" size="200,100">&lt;&lt;charDialog &quot;iliciele&quot; &quot;iliciele_serious.png&quot; &quot;Илисиэль&quot; &quot;На этот раз я тоже буду участвовать в миссии. На место нас доставит пилот из числа сотрудников занимающихся руинами. Ее зовут Миора, корабль будет ждать со стороны озера.&quot;&gt;&gt;
-\
+&lt;&lt;continuelink &quot;&lt;img class=&#39;continue&#39; /&gt;&quot;&gt;&gt;\
 Группа Лизбет начала расходиться, Альбертина помахала рукой Трею и проследовала из кабинета готовиться к своему заданию. Трей слегка задержался обдумывая ситуацию, видимо на этот раз ему придется как-то обойтись без помощи своей лучшей ассистентки.
-
+&lt;&lt;continuelink &quot;&lt;img class=&#39;continue&#39; /&gt;&quot;&gt;&gt;\
 Тут отвлекшись от своих мыслей Трей встретился взглядом с Илисиэль.
 
 &lt;&lt;include &quot;Cafe_highroom5_cross&quot;&gt;&gt;
@@ -2812,22 +2851,22 @@ window.kaleidocafe.activateEnemyGroup = function(group)
 [[Кафе Безмятежность|Iliciele_Q1_Cafe]]
 [[Прошлое Илисиэль|Iliciele_Q1_Past]]
 [[Бессмертие Илисиэль|Iliciele_Q1_Immortality]]
-[[На этом все|Cafe_highroom5_cross]]</tw-passagedata><tw-passagedata pid="18" name="Ship_to_Reinkure1" tags="lake" position="2500,200" size="200,100">Корабль ждал на площадке рядом с пирсом, ближайшее место где он мог поместиться рядом с кафе. Рядом с кораблем нас уже ждала Миора.
-
-&lt;&lt;charDialog &quot;miora&quot; &quot;miora_smile.png&quot; &quot;Миора&quot; &quot;Приветствую, похоже делегация будет немаленькой. Прошу, проходите и устраивайтесь поудобнее.&quot;&gt;&gt;\
-\
-&lt;&lt;charDialog &quot;iliciele&quot; &quot;iliciele_serious.png&quot; &quot;Илисиэль&quot; &quot;Отправимся незамедлительно, благо на месте уже есть вся необходимая инфраструктура для продолжительного проживания. Хотя, учитывая навыки нашей группы оно вряд ли будет долгим.&quot;&gt;&gt;\
-\
+[[На этом все|Cafe_highroom5_cross]]</tw-passagedata><tw-passagedata pid="18" name="Ship_to_Reinkure1" tags="lake" position="2500,200" size="200,100">&lt;&lt;audio &quot;cafe_suspense&quot; fadeto 0&gt;&gt;\
 &lt;&lt;set $location_name to &quot;Город Арт&#39;Эн&#39;Вейл\nПобережье озера&quot;&gt;&gt;\
+\
+Корабль ждал на площадке рядом с пирсом, ближайшее место где он мог поместиться рядом с кафе. Рядом с кораблем нас уже ждала Миора.
+&lt;&lt;continuelink &quot;&lt;img class=&#39;continue&#39; /&gt;&quot;&gt;&gt;\
+&lt;&lt;charDialog &quot;miora&quot; &quot;miora_smile.png&quot; &quot;Миора&quot; &quot;Приветствую, похоже делегация будет немаленькой. Прошу, проходите и устраивайтесь поудобнее.&quot;&gt;&gt;\
+&lt;&lt;continuelink &quot;&lt;img class=&#39;continue&#39; /&gt;&quot;&gt;&gt;\
+&lt;&lt;charDialog &quot;iliciele&quot; &quot;iliciele_serious.png&quot; &quot;Илисиэль&quot; &quot;Отправимся незамедлительно, благо на месте уже есть вся необходимая инфраструктура для продолжительного проживания. Хотя, учитывая навыки нашей группы оно вряд ли будет долгим.&quot;&gt;&gt;\
 [[Далее|Ship_to_Reinkure2]]
-&lt;&lt;audio &quot;cafe_suspense&quot; fadeto 0&gt;&gt;\</tw-passagedata><tw-passagedata pid="19" name="Iliciele_Q1_Magic" tags="cafe" position="2300,525" size="200,100">Практически никто не видел как Илисиэль использует магию, хотя она обладает целым карманным измерением и несколько раз открывала порталы в другие места. Однако никто никогда не чувствовал никаких возмущений в астральном плане, как если бы порталы открывались сами собой. Этот вопрос не давал покоя Трею, ведь даже самые могущественные маги независимо от метода оставляли след после своей магии.
-\
+</tw-passagedata><tw-passagedata pid="19" name="Iliciele_Q1_Magic" tags="cafe" position="2300,525" size="200,100">Практически никто не видел как Илисиэль использует магию, хотя она обладает целым карманным измерением и несколько раз открывала порталы в другие места. Однако никто никогда не чувствовал никаких возмущений в астральном плане, как если бы порталы открывались сами собой. Этот вопрос не давал покоя Трею, ведь даже самые могущественные маги независимо от метода оставляли след после своей магии.
+&lt;&lt;continuelink &quot;&lt;img class=&#39;continue&#39; /&gt;&quot;&gt;&gt;\
 &lt;&lt;charDialog &quot;iliciele&quot; &quot;iliciele_pride.png&quot; &quot;Илисиэль&quot; &quot;Хехехе... Крайне интересный и к сожалению очень редко задаваемый вопрос! Обычно я не делюсь такой информацией, но тебе я пожалуй расскажу, вдруг ты захочешь стать моим новым учеником в этой сфере.&quot;&gt;&gt;
-\
+&lt;&lt;continuelink &quot;&lt;img class=&#39;continue&#39; /&gt;&quot;&gt;&gt;\
 &lt;&lt;charDialog &quot;iliciele&quot; &quot;iliciele_power.png&quot; &quot;Илисиэль&quot; &quot;То что я тебе сейчас расскажу может сломать твои шаблоны, хотя есть шанс, что многие и так догадываются об этом. Но очевидно, одного знания будет недостаточно чтобы это использовать.&quot;&gt;&gt;
 \
 [[Далее|Iliciele_Q1_Magic2]]</tw-passagedata><tw-passagedata pid="20" name="Iliciele_Q1_Cafe" tags="cafe" position="2300,650" size="200,100">&lt;&lt;charDialog &quot;iliciele&quot; &quot;iliciele_pride.png&quot; &quot;Илисиэль&quot; &quot;Идея подобного кафе уже давно была у меня на уме. Жить вечно это неимоверно скучно знаешь ли, приходится каждый раз находить себе все более изощренные развлечения. \&quot;Безмятежность\&quot; сочетает в себе то чем я давно хотела заняться, изысканные десерты созданные мною приносят людям максимальное наслаждение, бескрайние просторы моего карманного мира Эна Суа плавно соединяются с кафе давая людям так же насладиться чудесными космическими по красоте видами не покидая их города. Ну и все эти интересные побочные задания, влияющие на судьбу целых миров... Хе-хе, я очень довольна своим решением воспользоваться средствами Магической Ассоциации... Конечно для меня они лишь дети играющие в магию, но надеюсь моему ученику удастся придерживать их на верном пути.&quot;&gt;&gt;
-
 \
 [[Назад|Iliciele_Q1]]</tw-passagedata><tw-passagedata pid="21" name="Iliciele_Q1_Past" tags="cafe" position="2300,775" size="200,100">&lt;&lt;charDialog &quot;iliciele&quot; &quot;iliciele_surprised.png&quot; &quot;Илисиэль&quot; &quot;Ты хочешь знать о моем прошлом? Хм... Это сложный вопрос, я живу уже целую вечность, рассказ займет слишком много времени, может что-то более конкретное?&quot;&gt;&gt;
 \
@@ -2835,49 +2874,48 @@ window.kaleidocafe.activateEnemyGroup = function(group)
 [[Времена Кис&#39;Ами|Iliciele_Q1_Past_KisamiPeriod]]
 [[Мир бесконечных руин|Iliciele_Q1_Past_WorldOfEndlessRuins]]
 [[Назад|Iliciele_Q1]]</tw-passagedata><tw-passagedata pid="22" name="Iliciele_Q1_Immortality" tags="cafe" position="2300,900" size="200,100">&lt;&lt;charDialog &quot;iliciele&quot; &quot;iliciele_power.png&quot; &quot;Илисиэль&quot; &quot;Хочешь знать как я обрела бессмертие? Вечную жизнь, мгновенное восстановление тела после любых воздействий. Это было настолько невообразимо давно, хм...&quot;&gt;&gt;
-\
+&lt;&lt;continuelink &quot;&lt;img class=&#39;continue&#39; /&gt;&quot;&gt;&gt;\
 &lt;&lt;charDialog &quot;iliciele&quot; &quot;iliciele_pride.png&quot; &quot;Илисиэль&quot; &quot;Я постоянно отшучиваюсь что раз моим основным занятием всегда было создание уникальных зелий, то я просто однажды создала эликсир бессмертия... Но ты поймешь что это ложь. Думаю тебе я могу рассказать правду.&quot;&gt;&gt;
-\
+&lt;&lt;continuelink &quot;&lt;img class=&#39;continue&#39; /&gt;&quot;&gt;&gt;\
 &lt;&lt;charDialog &quot;iliciele&quot; &quot;iliciele_tired.png&quot; &quot;Илисиэль&quot; &quot;По всей видимости мое бессмертие - результат некоего невероятного ритуала, подробнестей которого я конечно же не знаю, я даже не знаю сама ли я его проводила, ибо никаких воспоминаний у меня не осталось. Из того что мне удалось выяснить после того как я пришла в себя, ритуал был связан с попыткой использовать всю энергию что была доступна в прошлом, доступна в нынешнем и стала бы доступна в будущем чтобы совершить некий \&quot;ПРИЗЫВ\&quot;, для этого ритуал предусматривал использование &lt;span class=\&quot;tooltip\&quot;&gt;//Алого Измерения//&lt;span class=\&quot;tooltiptext\&quot;&gt;Некое пространство бесконечной энергии. Ведущие умы считают что это само Мироздание, но в точке времени бесконечно удаленной в прошлое! &lt;br&gt;&lt;br&gt; Использование Золотой Силы и Хаоса одновременно приводит к прорыву пространства в этот план.&lt;br&gt;&lt;br&gt;Источник Алого Бедствия.&lt;/span&gt;&lt;/span&gt; в качестве источника.&quot;&gt;&gt;
 \
 [[Назад|Iliciele_Q1]]</tw-passagedata><tw-passagedata pid="23" name="Iliciele_Q1_Magic2" tags="cafe" position="2525,525" size="200,100">&lt;&lt;charDialog &quot;iliciele&quot; &quot;iliciele_tired.png&quot; &quot;Илисиэль&quot; &quot;То что вы называете магией для меня натуральный процесс, и я могу использовать подобные изменения мира простой силой воли. На самом деле все, за очень редким исключением, используют магию неправильно. Астрального и материального плана не существует, все это лишь конструкты единого ментального плана - грубо говоря мы находимся в сознании мира, его ментальном поле, которое симулирует все остальное и время в том числе. У мира есть духовное ядро, частица Альтедиара, которое и генерирует это ментальное поле. Все мы так же обладаем духовными ядрами, которые связаны с материальными, астральными и временными конструктами ментального поля мира. Большинство существ научилось пользоваться лишь средствами предоставляемыми самим миром, но не его фундаментальной основой.&quot;&gt;&gt;
-\
+&lt;&lt;continuelink &quot;&lt;img class=&#39;continue&#39; /&gt;&quot;&gt;&gt;\
 &lt;&lt;charDialog &quot;iliciele&quot; &quot;iliciele_serious.png&quot; &quot;Илисиэль&quot; &quot;Конечно есть такие существа как йокай, которые появились на свет с врожденным умением влиять на мир не используя его конструкты. Однако людям требуются целые жизни чтобы научиться использовать &lt;span class=\&quot;tooltip\&quot;&gt;//н-поле.//&lt;span class=\&quot;tooltiptext\&quot;&gt;Ментальный план мироздания, основа на которой держится астральный и физический планы..&lt;/span&gt;&lt;/span&gt; Так же есть те кто приобрел при рождении или уже жизни уникальные умения реализующие тот же потенциал, например твоя уникальная способность распозновать ложь на подсознательном уровне, чисто за счет особенностей твоего духовного ядра.&quot;&gt;&gt;
 \
 [[Далее|Iliciele_Q1_Magic3]]</tw-passagedata><tw-passagedata pid="24" name="Iliciele_Q1_Past_Birthplace" tags="cafe" position="2525,775" size="200,100">Илисиэль глубоко задумалась, на ее лице появилась тоска и черты сожаления.
 &lt;&lt;charDialog &quot;iliciele&quot; &quot;iliciele_sad.png&quot; &quot;Илисиэль&quot; &quot;К сожалению я не помню где родилась и как протекала моя жизнь до того момента как я обрела бессмертие... У меня есть только косвеные догадки и имя написанное в дневнике, который я нашла при себе - Силь.&quot;&gt;&gt;
 \
 [[Назад|Iliciele_Q1_Past]]</tw-passagedata><tw-passagedata pid="25" name="Iliciele_Q1_Past_KisamiPeriod" tags="cafe" position="2750,775" size="200,100">&lt;&lt;charDialog &quot;iliciele&quot; &quot;iliciele_normal.png&quot; &quot;Илисиэль&quot; &quot;Период Кис&#39;Ами? Миса и Луиста тогда владели этими мирами, я только начала обучение Телру, началось противостояние Кис&#39;Ами и Сейнару... Слово &lt;span class=\&quot;tooltip\&quot;&gt;//мазоку//&lt;span class=\&quot;tooltiptext\&quot;&gt;Вид существ полностью состоящих из магической энергии, обладающие непостижимыми методами использования оной. (махо - магия (яп.), зоку - раса (яп.)) так же можно расшифровать как демоническая раса (ма - демон (яп.)). &lt;/span&gt;&lt;/span&gt; появилось позже и не соответствует истинной сущности этих древних созданий. Сейчас слово \&quot;Сейнару\&quot; ассоциируется лишь с Великой Пятеркой, которых победила Шинше, к сожалению их гибель привела к исчезновению всех мазоку в мирах, они были лишь частицами Сейнару. Однако судьба Луксор нам не известна, ей удалось сохраниться будучи заточенной в кристал душ, она оставалась в распоряжении Мисы, и сейчас видимо по прежнему находится вместе с ней.&quot;&gt;&gt;
-\
+&lt;&lt;continuelink &quot;&lt;img class=&#39;continue&#39; /&gt;&quot;&gt;&gt;\
 &lt;&lt;charDialog &quot;iliciele&quot; &quot;iliciele_tired.png&quot; &quot;Илисиэль&quot; &quot;Мазоку тогда удалось победить практически всех Кис&#39;Ами, остались лишь единицы. Многие как Луиста переродились уже будучи частью цикла душ. Кто знает сколько среди нас бывших Кис&#39;Ами теперь... Другие скрылись, Айнос же всегда оставался на виду, учитывая его дар мазоку решили просто игнорировать его. Что же до Ланрис - можно так сказать матери Мисы, Луисты и Айноса, то по идеи она осталась в Альтиоре, будем надеяться что Мису ждало приятное воссоединение. Интересно что они планируют теперь, хотя судя по всему они решили не вмешиваться в наши дела.&quot;&gt;&gt;
 [[Назад|Iliciele_Q1_Past]]</tw-passagedata><tw-passagedata pid="26" name="Iliciele_Q1_Past_WorldOfEndlessRuins" tags="cafe" position="2975,775" size="200,100">&lt;&lt;charDialog &quot;iliciele&quot; &quot;iliciele_happy.png&quot; &quot;Илисиэль&quot; &quot;После завершения обучения Телру я вернулась в розарий Альпери, сейчас он носит иное название - Мир Бесконечных Руин. Этот розарий был своеобразным домом для меня на протяжении многих эпох, мне пришлось начать восстановление его столицы после продолжительных сражений между Кисами и Сейнару, хотя недавно он так же пострадал от подобного случая с Шинше. Восстановив столицу я активировала древний механизм, который скрыл ее во времени на подобие храмам хиса, выполнив таким образом свое обещание главе города я наконец смогла отправится сюда и лицезреть чего добился мой ученик и народы его родного розария.&quot;&gt;&gt;
-
 \
 [[Назад|Iliciele_Q1_Past]]</tw-passagedata><tw-passagedata pid="27" name="Iliciele_Q1_Magic3" tags="cafe" position="2750,525" size="200,100">&lt;&lt;charDialog &quot;iliciele&quot; &quot;iliciele_tired.png&quot; &quot;Илисиэль&quot; &quot;Секрет такой настоящей непосредственной магии в единении с н-полем. Ментальный план мира и всех существ на самом деле связан и представляет собой единое целое, разделенное лишь условно. После бесчисленных тренировок взаимодействовать с ним он станет для тебя продолжением собственного тела, и реальность воплощаемую духовным ядром мира можно будет изменять лишь подумав об этом. Конечно на словах это все здорово, но реально научиться, приобрести умение управлять н-полями столь естесственным методом крайне сложно и займет чрезвычайно много времени. Из всех моих учеников, а их было не мало, научиться этому смог лишь Телру.&quot;&gt;&gt;
 \
-[[Назад|Iliciele_Q1]]</tw-passagedata><tw-passagedata pid="28" name="Ship_to_Reinkure2" tags="ship" position="2800,200" size="200,100">Корабль резко взмыл вверх и Миора запросила активацию &quot;Горизонта&quot; в розарий Реинкурэ. Пройдя сквозь портал перед Трейем предстала яркая песочная гладь пустыни Эйрид. Впереди уже виднелись пики руин хиса. Миора плавно облетела комплекс руин и посадила корабль у палаточного лагера. Так быстро и просто, Трей никогда еще не летал на транспорте так быстро.
-
+[[Назад|Iliciele_Q1]]</tw-passagedata><tw-passagedata pid="28" name="Ship_to_Reinkure2" tags="ship" position="2800,200" size="200,100">&lt;&lt;set $location_name to &quot;Корабль Миоры&quot;&gt;&gt;\
+\
+Корабль резко взмыл вверх и Миора запросила активацию &quot;Горизонта&quot; в розарий Реинкурэ. Пройдя сквозь портал перед Трейем предстала яркая песочная гладь пустыни Эйрид. Впереди уже виднелись пики руин хиса. Миора плавно облетела комплекс руин и посадила корабль у палаточного лагера. Так быстро и просто, Трей никогда еще не летал на транспорте так быстро.
+&lt;&lt;continuelink &quot;&lt;img class=&#39;continue&#39; /&gt;&quot;&gt;&gt;\
 &lt;&lt;charDialog &quot;miora&quot; &quot;miora_tired.png&quot; &quot;Миора&quot; &quot;Вот мы и на месте, не забываем свои вещи, в лагере все уже подготовлено.&quot;&gt;&gt;\
-
+&lt;&lt;continuelink &quot;&lt;img class=&#39;continue&#39; /&gt;&quot;&gt;&gt;\
 Выйдя из корабля Трея сразу встретил порыв обжигающего воздуха и песчинки словно жалили его в лицо. Группа поспешила к палаткам.
-
+\
 [[Далее|Ruins_Entrance_1]]
-\
-\
-&lt;&lt;set $location_name to &quot;Корабль Миоры&quot;&gt;&gt;\</tw-passagedata><tw-passagedata pid="29" name="Ruins_Entrance_1" tags="desert" position="3100,200" size="200,100">&lt;&lt;set $location_name to &quot;Пустыня Эйрид\nРуины Аисса-Альмитр\nВход в руины&quot;&gt;&gt;\
+</tw-passagedata><tw-passagedata pid="29" name="Ruins_Entrance_1" tags="desert" position="3100,200" size="200,100">&lt;&lt;audio &quot;cafe_suspense&quot; stop&gt;&gt;\
+&lt;&lt;audio &quot;desert&quot; loop play&gt;&gt;\
+&lt;&lt;set $location_name to &quot;Пустыня Эйрид\nРуины Аисса-Альмитр\nВход в руины&quot;&gt;&gt;\
 \
 Миора вернулась к кораблю. На входе Трея встретила ассистентка в сером спец-костюме.
-\
+&lt;&lt;continuelink &quot;&lt;img class=&#39;continue&#39; /&gt;&quot;&gt;&gt;\
 &lt;&lt;charDialog &quot;libir&quot; &quot;libir_normal.png&quot; &quot;Либир&quot; &quot;Приветствую вас, я - Либир, это я обнаружила руины. В данный момент последняя находка заставила профессора срочно вернуться в Цитадель по указанию Лаби. Нам сказали что вы распологаете дополнительными возможностями изучения руин, вроде возможности узнать что здесь происходило в глубоком прошлом, это было бы крайне познавательно для нашего дела, стоит заранее узнать куда могут вести Врата прежде чем активировать их.&quot;&gt;&gt;\
-\
+&lt;&lt;continuelink &quot;&lt;img class=&#39;continue&#39; /&gt;&quot;&gt;&gt;\
 Либир сделала паузу задумавшись...
-\
+&lt;&lt;continuelink &quot;&lt;img class=&#39;continue&#39; /&gt;&quot;&gt;&gt;\
 &lt;&lt;charDialog &quot;libir&quot; &quot;libir_tired.png&quot; &quot;Либир&quot; &quot;Да, еще меня просили вам передать, что военные силы Эдена незримо следят за руинами, в случае выхода ситуации из под контроля получены указания уничтожить весь объект...&quot;&gt;&gt;\
 \
 [[Далее...|Ruins_Entrance2]]
-\
-&lt;&lt;audio &quot;cafe_suspense&quot; stop&gt;&gt;\
-&lt;&lt;audio &quot;desert&quot; loop play&gt;&gt;\
+
 </tw-passagedata><tw-passagedata pid="30" name="Ruins_Base" tags="ruinshub" position="3500,300" size="200,100">Здесь вы можете просмотреть Архив исследований Руин или назначить новые операции.
 
 [[Группа|Team]]
@@ -3181,11 +3219,11 @@ Evasion: 10
 
 
 [[Назад...|Ruins_Base]]</tw-passagedata><tw-passagedata pid="58" name="Ruins_Entrance2" tags="desert" position="3125,325" size="200,100">&lt;&lt;charDialog &quot;libir&quot; &quot;libir_serious.png&quot; &quot;Либир&quot; &quot;Пожалуй стоит представить вам остальных кто остался здесь. Это близнецы Лан и Ран, они обеспечивают работу нашей исследовательской инфраструктуры.&quot;&gt;&gt;\
-\
+&lt;&lt;continuelink &quot;&lt;img class=&#39;continue&#39; /&gt;&quot;&gt;&gt;\
 Два молодых специалиста, явно брат и сестра подошли поближе.
-\
+&lt;&lt;continuelink &quot;&lt;img class=&#39;continue&#39; /&gt;&quot;&gt;&gt;\
 &lt;&lt;charDialog &quot;lan&quot; &quot;lan_normal.png&quot; &quot;Лан&quot; &quot;Рада познакомиться. Ведущий специалист по снабжению - Ланеска Шун к вашим услугам. Обращайтесь ко мне если вам понадобится помощь с материалами. Мы находим в руинах много доступных Энергетических Кристаллов, их можно обменять на что-то полезное.&quot;&gt;&gt;\
-\
+&lt;&lt;continuelink &quot;&lt;img class=&#39;continue&#39; /&gt;&quot;&gt;&gt;\
 &lt;&lt;charDialog &quot;ran&quot; &quot;ran_normal.png&quot; &quot;Ран&quot; &quot;Я тоже рад встретиться с вами. Ведущий специалист по обслуживанию - Ранер Шун. Если понадобятся какие-либо строительные работы, я могу быстро возвести для вас необходимую инфраструктуру с помощью нашего фабрикатора.&quot;&gt;&gt;\
 \
 [[Далее...|Ruins_Entrance3]]
@@ -3199,11 +3237,14 @@ Evasion: 10
 &lt;&lt;audio &quot;unprecendented&quot; loop play&gt;&gt;\
 &lt;&lt;script&gt;&gt;window.kaleidocafe.actionSound(&quot;collapse.mp3&quot;);&lt;&lt;/script&gt;&gt;
 Войдя в помещение вы слышите отдаленный гул, что-то приближается!
-Внезапно как будто бы из ниоткуда возникает двухметровый робот. Он странно двигается, с ним явно что-то не так. \
-&lt;&lt;timed 2s&gt;&gt;
+Внезапно как будто бы из ниоткуда возникает двухметровый робот. Он странно двигается, с ним явно что-то не так.
+\
+&lt;&lt;continuelink &quot;&lt;img class=&#39;continue&#39; /&gt;&quot;&gt;&gt;\
+\
 &lt;&lt;charDialog &quot;daisa&quot; &quot;daisa.png&quot; &quot;Дайса-7&quot; &quot;Обнаружены живые существа... Поиск... Нет записей в списке исключений... ОШИБКА: список исключений поврежден! Активирован защитный режим!&quot;&gt;&gt;\
-&lt;&lt;/timed&gt;&gt;\
-&lt;&lt;timed 4s&gt;&gt;\
+\
+&lt;&lt;continuelink &quot;&lt;img class=&#39;continue&#39; /&gt;&quot;&gt;&gt;\
+\
 	&lt;&lt;if $TBS_chars[1].joined is true&gt;&gt;\
     	    &lt;&lt;charDialog &quot;holy&quot; &quot;holy_surprised.png&quot; &quot;Холи&quot; &quot;Похоже мы нашли пропавшего робота Либир. И с ним явно что-то нитак.&quot;&gt;&gt;\
     &lt;&lt;/if&gt;&gt;\
@@ -3213,20 +3254,20 @@ Evasion: 10
     &lt;&lt;if $TBS_chars[4].joined is true&gt;&gt;\
     	    &lt;&lt;charDialog &quot;arken&quot; &quot;arken_serious.png&quot; &quot;Аркен&quot; &quot;Наш противник уязвим для энергетических атак и хорошо защищен от физического урона. Рекомендую использовать магию и энергетические атаки. И, очевидно, машины не восприимчивы к ментальному воздействию.&quot;&gt;&gt;\
     &lt;&lt;/if&gt;&gt;\
-&lt;&lt;/timed&gt;&gt;\
-&lt;&lt;timed 6s&gt;&gt;[[Вступить в бой|Battle_Daisa7]]&lt;&lt;/timed&gt;&gt;
+\
+[[Вступить в бой|Battle_Daisa7]]
 &lt;&lt;else&gt;&gt;
 Перекресток в середине комплекса. В углах, на колоннах и полу растут небольшие энергетические кристаллы. Они отдают теплом. 
 &lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="63" name="Ruins_NightDoor" tags="ruinsnightdoor" position="4450,175" size="200,100">&lt;&lt;set $location_name to &quot;Пустыня Эйрид\nРуины Аисса-Альмитр\nТемпоральная дверь Ночи&quot;&gt;&gt;\</tw-passagedata><tw-passagedata pid="64" name="Ruins_LightDoor" tags="ruinslightdoor" position="4450,425" size="200,100">&lt;&lt;set $location_name to &quot;Пустыня Эйрид\nРуины Аисса-Альмитр\nТемпоральная дверь Света&quot;&gt;&gt;\</tw-passagedata><tw-passagedata pid="65" name="Ruins_TransferRoom" tags="ruinstransferroom" position="4900,300" size="200,100">&lt;&lt;set $location_name to &quot;Пустыня Эйрид\nРуины Аисса-Альмитр\nЗал перемещений&quot;&gt;&gt;\</tw-passagedata><tw-passagedata pid="66" name="Ruins_RitualRoom" tags="ruinsritualroom" position="4675,300" size="200,100">&lt;&lt;set $location_name to &quot;Пустыня Эйрид\nРуины Аисса-Альмитр\nРитуальный Зал&quot;&gt;&gt;\</tw-passagedata><tw-passagedata pid="67" name="Ruins_Vault" tags="ruinsvault" position="4900,175" size="200,100">&lt;&lt;set $location_name to &quot;Пустыня Эйрид\nРуины Аисса-Альмитр\nХранилище&quot;&gt;&gt;\</tw-passagedata><tw-passagedata pid="68" name="Ruins_TemporalTrap" tags="ruinstemporaltrap" position="4900,425" size="200,100">&lt;&lt;set $location_name to &quot;Пустыня Эйрид\nРуины Аисса-Альмитр\nПлатформа&quot;&gt;&gt;\</tw-passagedata><tw-passagedata pid="69" name="Ruins_Cradle" tags="ruinscradle" position="5125,300" size="200,100">&lt;&lt;set $location_name to &quot;Пустыня Эйрид\nРуины Аисса-Альмитр\nОбитель&quot;&gt;&gt;\</tw-passagedata><tw-passagedata pid="70" name="Ruins_Entrance3" tags="desert" position="3150,450" size="200,100">&lt;&lt;charDialog &quot;mirisha&quot; &quot;mirisha_normal.png&quot; &quot;Мириша&quot; &quot;Ну и осталась только я, приятно познакомится. Мириша Пларистин из Аисса-Пларистин, хиса, как вы можете видеть. Отвечаю за здоровье и помогу с переводом табличек. Сразу хочу сказать, что так как как я не отношусь к сословию жриц, то кристалы памяти расшифровать мне не удастся, но думаю это вполне под силу принцессе Эхо.&quot;&gt;&gt;\
-\
+&lt;&lt;continuelink &quot;&lt;img class=&#39;continue&#39; /&gt;&quot;&gt;&gt;\
 &lt;&lt;charDialog &quot;libir&quot; &quot;libir_normal.png&quot; &quot;Либир&quot; &quot;Итак, на этом со знакомством покончено. Перейдем к делу.&quot;&gt;&gt;\
-\
+&lt;&lt;continuelink &quot;&lt;img class=&#39;continue&#39; /&gt;&quot;&gt;&gt;\
 &lt;&lt;charDialog &quot;libir&quot; &quot;libir_serious.png&quot; &quot;Либир&quot; &quot;Руины уже хорошо изучены, однако многие зоны разделены темпорально, тоесть они находятся в ином времени или вне времени вовсе. Зачастую совершенно невзрачные предметы являются своего рода \&quot;ключами\&quot; от этих зон, с этим нам еще приходится разбираться чтобы получить доступ к этим скрытым зонам. Недавно в одной из таких зон пропал мой робот - Дайса-7, одна из последних разработок доступных Ассоциации. Такое случалось и раньше, но сегодня впервые так долго. Возможно вам удастся встретить его пока вы будете изучать руины.&quot;&gt;&gt;\
 \
 [[Далее...|Ruins_Entrance4]]</tw-passagedata><tw-passagedata pid="71" name="Ruins_Entrance4" tags="desert" position="3175,575" size="200,100">&lt;&lt;charDialog &quot;libir&quot; &quot;libir_tired.png&quot; &quot;Либир&quot; &quot;Ну а главной проблемой является то, что хоть Черные Врата и функциональны, к ним не подается энергия. Как показывают наши датчики в руинах есть источник энергии предназначенный для них, но что-то его блокирует. Придется найти его в темпоральных зонах и восстановить подачу энергии.&quot;&gt;&gt;\
-\
+&lt;&lt;continuelink &quot;&lt;img class=&#39;continue&#39; /&gt;&quot;&gt;&gt;\
 &lt;&lt;charDialog &quot;ran&quot; &quot;ran_serious.png&quot; &quot;Ран&quot; &quot;Хочу отметить что использование каких либо источников энергии доступных нам может повредить Врата, поэтому придется разобраться с тем что находится где-то в руинах.&quot;&gt;&gt;\
-\
+&lt;&lt;continuelink &quot;&lt;img class=&#39;continue&#39; /&gt;&quot;&gt;&gt;\
 На это брифинг закончен и все собрались в центральной комнате с голографическим столом, ожидая распоряжений Трея.
 \
 [[В Штаб Операций|Ruins_Base]]</tw-passagedata><tw-passagedata pid="72" name="Supply" tags="ruinshub" position="3675,425" size="100,100"></tw-passagedata><tw-passagedata pid="73" name="Upgrades" tags="ruinshub" position="3425,425" size="100,100"></tw-passagedata><tw-passagedata pid="74" name="RestHeal" tags="ruinshub" position="3550,675" size="100,100">&lt;&lt;charDialog &quot;mirisha&quot; &quot;mirisha_normal.png&quot; &quot;Мириша&quot; &quot;Решили отдохнуть? Или может вам нужна помощь врача?&quot;&gt;&gt;\
@@ -3251,11 +3292,11 @@ Evasion: 10
 &lt;/div&gt;
 Благодаря помощи профессора Расса удалось перевести название руин - Аисса-Альмитр что дословно переводится как &quot;Дом Альмитр&quot;.
 
-Альмитр же является скорее титулом или &quot;должностью&quot; кис&#39;ами для которого был возведен комплекс. Приблизительный перевод можно свести к слову &quot;надзиратель&quot;. Из истории кис&#39;ами можно сделать вывод что единственным &quot;надзирателем&quot; была &quot;мать&quot; Мисы, Луисты и Айноса - Ланрис. По всей видимости этот комплекс был создан для нее. Однако в отличии от остальных кис&#39;ами она скорее всего осталась в Альтиоре.
+Альмитр же является скорее титулом или &quot;должностью&quot; кис&#39;ами для которого был возведен комплекс. Приблизительный перевод можно свести к слову &quot;первопроходец&quot;. Из истории кис&#39;ами можно сделать вывод что единственным &quot;первопроходцем&quot; была кис&#39;ами по имени Лакри и насколько известно она была архитектором всех Черных Врат. По всей видимости этот комплекс был создан для нее. 
 
 В руинах были обнаружены единственные оставшиеся на данный момент &quot;Черные Врата&quot;. Учитывая что Миса заставила исчезнуть все, что так или иначе могло позволить попасть в Альтиор, эти Врата ведут в иное место.
 
-[[Назад...|Journal]]</tw-passagedata><tw-passagedata pid="77" name="Battle_Daisa7" tags="ruinscrosswalk battle" position="4500,600" size="100,100">&lt;p align=&quot;center&quot;&gt;\
+[[Назад...|Journal]]</tw-passagedata><tw-passagedata pid="77" name="Battle_Daisa7" tags="ruinscrosswalk battle" position="4500,900" size="100,100">&lt;p align=&quot;center&quot;&gt;\
 &lt;&lt;initBattle &quot;Daisa-7&quot;&gt;&gt;\
 &lt;span id=&quot;QueuePanel&quot;&gt;&lt;img src=&quot;Images\loading.webp&quot; /&gt;&lt;/span&gt;\
 &lt;span id=&quot;EnemyPanel&quot;&gt;&lt;img src=&quot;Images\loading.webp&quot; /&gt;&lt;/span&gt;\
