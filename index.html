@@ -1361,8 +1361,8 @@ window.MapTravel = function(destination)
 		state.active.variables.Encounters_Ruins.push(new Encounter_Block("Старт","encounter_entrance.png","",true,0,3));
 				
 		state.active.variables.Encounters_Ruins.push(new Encounter_Block("Событие","encounter_event.png","Ruins_Hallway",true,1,3));
-		state.active.variables.Encounters_Ruins.push(new Encounter_Block("Бой","encounter_battle.png","Ruins_Battle",true,2,2));
-		state.active.variables.Encounters_Ruins.push(new Encounter_Block("Бой","encounter_battle.png","Ruins_Battle",false,3,3));
+		state.active.variables.Encounters_Ruins.push(new Encounter_Block("Событие","encounter_event.png","Ruins_Hallway",true,2,2));
+		state.active.variables.Encounters_Ruins.push(new Encounter_Block("Событие","encounter_event.png","Ruins_Hallway",false,3,3));
 		state.active.variables.Encounters_Ruins.push(new Encounter_Block("Бой","encounter_battle.png","Ruins_Battle",false,4,4));
 		state.active.variables.Encounters_Ruins.push(new Encounter_Block("Бой","encounter_battle.png","Ruins_Battle",true,5,5));
 		state.active.variables.Encounters_Ruins.push(new Encounter_Block("Бой","encounter_battle.png","Ruins_Battle",true,6,4));
@@ -1417,13 +1417,27 @@ macros.wikifyEncounters_Ruins = {
 				}
 				else
 				{
-					if (item.revealed == false)
+					if (item.pos_X > 0 && item.pos_X < state.active.variables.PlayerPosX)
 					{
-						WF += '<span class="map_tooltip" style="left:'+(item.pos_X*72)+'px; top:'+item.pos_Y*72+'px;position:absolute;"><img src="Images/encounter_unknown.png" class="encounter_dark" /><span class="map_tooltiptext"><b>Неизвестно</b></span></span>';
+						if (item.revealed == false)
+						{
+							WF += '<span class="map_tooltip" style="left:'+(item.pos_X*72)+'px; top:'+item.pos_Y*72+'px;position:absolute;"><img src="Images/encounter_cleared.png" class="encounter_dark" /><span 	class="map_tooltiptext"><b>Неизвестно</b></span></span>';
+						}
+						else
+						{
+							WF += '<span class="map_tooltip" style="left:'+(item.pos_X*72)+'px; top:'+item.pos_Y*72+'px;position:absolute;"><img src="Images/encounter_cleared.png" class="encounter_dark" /><span class="map_tooltiptext"><b>' + item.name + '</b></span></span>';
+						}
 					}
 					else
 					{
-						WF += '<span class="map_tooltip" style="left:'+(item.pos_X*72)+'px; top:'+item.pos_Y*72+'px;position:absolute;"><img src="Images/' + item.pic + '" class="encounter_dark" /><span class="map_tooltiptext"><b>' + item.name + '</b></span></span>';
+						if (item.revealed == false)
+						{
+							WF += '<span class="map_tooltip" style="left:'+(item.pos_X*72)+'px; top:'+item.pos_Y*72+'px;position:absolute;"><img src="Images/encounter_unknown.png" class="encounter_dark" /><span 	class="map_tooltiptext"><b>Неизвестно</b></span></span>';
+						}
+						else
+						{
+							WF += '<span class="map_tooltip" style="left:'+(item.pos_X*72)+'px; top:'+item.pos_Y*72+'px;position:absolute;"><img src="Images/' + item.pic + '" class="encounter_dark" /><span class="map_tooltiptext"><b>' + item.name + '</b></span></span>';
+						}
 					}
 				}
 				
@@ -1781,6 +1795,49 @@ window.kaleidocafe.actionEffect = function(ElementID, Effect, duration)
   
       
 };
+// ---- Divine Music control
+window.kaleidocafe.DivineMusic = function() 
+{ 
+  
+ 	var audio = new Audio("Audio\\ChronoArk_2boss.mp3");
+    audio.volume=0.75;
+	audio.loop=true;
+	
+	audio.currentTime = 110;
+	
+	audio.play();
+	
+	window.kaleidocafe.DivineMusicCycle(audio);
+	
+	
+	
+      
+};
+
+window.kaleidocafe.DivineMusicCycle = function(audio) 
+{ 
+  
+ 	
+	window.helper.sleep(1000).then(() => {
+        
+		if (audio.currentTime>116)
+		{
+			 audio.currentTime = audio.currentTime-115;
+			 //audio.play();
+			 
+		}
+		
+		window.kaleidocafe.DivineMusicCycle(audio);
+        
+    });
+	
+	
+	
+	
+      
+};
+
+
 // ---- Sound Effect
 window.kaleidocafe.actionSound = function(sound) 
 { 
@@ -3302,7 +3359,7 @@ window.kaleidocafe.activateEnemyGroup = function(group)
 &lt;span id=&quot;ActionPanel&quot;&gt;&lt;img src=&quot;Images\loading.webp&quot; /&gt;&lt;/span&gt;\
 &lt;/p&gt;\
 &lt;&lt;script&gt;&gt;window.battleUpdate(1000);&lt;&lt;/script&gt;&gt;\
-&lt;&lt;audio &quot;ruins_battle1&quot; loop play&gt;&gt;\</tw-passagedata><tw-passagedata pid="32" name="Inventory" tags="menu" position="700,1000" size="100,100">&lt;&lt;if $inventory.length == 0&gt;&gt;У вас ничего нет.&lt;&lt;else&gt;&gt;У вас с собой:&lt;br&gt;&lt;&lt;invWithLinks&gt;&gt; &lt;&lt;/if&gt;&gt;
+&lt;&lt;script&gt;&gt;window.kaleidocafe.DivineMusic();&lt;&lt;/script&gt;&gt;\</tw-passagedata><tw-passagedata pid="32" name="Inventory" tags="menu" position="700,1000" size="100,100">&lt;&lt;if $inventory.length == 0&gt;&gt;У вас ничего нет.&lt;&lt;else&gt;&gt;У вас с собой:&lt;br&gt;&lt;&lt;invWithLinks&gt;&gt; &lt;&lt;/if&gt;&gt;
 
 [[Some Item]]
 
